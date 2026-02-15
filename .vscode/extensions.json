@@ -1,0 +1,19 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "dsznajder.es7-react-js-snippets",
+        "usernamehw.errorlens",
+        "streetsidesoftware.code-spell-checker",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "stylelint.vscode-stylelint",
+        "ms-playwright.playwright",
+        "unifiedjs.vscode-mdx"
+    ],
+    "unwantedRecommendations": [
+        "hookyqr.beautify",
+        "octref.vetur"
+    ]
+}
