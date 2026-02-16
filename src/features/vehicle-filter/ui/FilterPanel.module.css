@@ -1,0 +1,47 @@
+.panel {
+  background-color: var(--bg-surface-1);
+  padding: var(--space-5);
+  border-right: 1px solid var(--border-subtle);
+  height: calc(100vh - 64px); /* Subtract header height approx */
+  position: sticky;
+  top: 64px;
+  overflow-y: auto;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.mobileToggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .panel {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+}
