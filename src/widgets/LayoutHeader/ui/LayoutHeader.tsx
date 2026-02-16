@@ -22,9 +22,10 @@ export function LayoutHeader({ className }: { className?: string }) {
         <Button
           variant="ghost"
           size="sm"
+          className={styles.contributeButton}
           onClick={() => window.open('https://github.com/open-ev-data', '_blank')}
         >
-          GitHub
+          Contribute on GitHub
         </Button>
       </div>
     </header>
