@@ -4,14 +4,14 @@ This document covers the technical architecture, FSD layers, data flow, state ma
 
 ### Related Documentation
 
-| Document | Scope |
-| --- | --- |
-| [Design System](DESIGN_SYSTEM.md) | Color palette, typography, spacing, design tokens |
-| [UI Components](UI_COMPONENTS.md) | Component specs, variants, states, data-driven rendering |
-| [Responsive Strategy](RESPONSIVE_STRATEGY.md) | Breakpoints, viewport adaptations, touch behavior |
-| [Page Layouts](PAGE_LAYOUTS.md) | Page-level structure and component composition |
-| [Getting Started](GET_STARTED.md) | Setup instructions and development workflow |
-| [Schema Reference](schema/reference_20260216.json) | Vehicle data field definitions (required vs optional) |
+| Document                                           | Scope                                                    |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| [Design System](DESIGN_SYSTEM.md)                  | Color palette, typography, spacing, design tokens        |
+| [UI Components](UI_COMPONENTS.md)                  | Component specs, variants, states, data-driven rendering |
+| [Responsive Strategy](RESPONSIVE_STRATEGY.md)      | Breakpoints, viewport adaptations, touch behavior        |
+| [Page Layouts](PAGE_LAYOUTS.md)                    | Page-level structure and component composition           |
+| [Getting Started](GET_STARTED.md)                  | Setup instructions and development workflow              |
+| [Schema Reference](schema/reference_20260216.json) | Vehicle data field definitions (required vs optional)    |
 
 The following main topics are addressed:
 
@@ -40,51 +40,51 @@ The project uses the following technologies with their respective versions:
 
 ### Runtime Environment
 
-| Technology | Version | Purpose |
-| --- | --- | --- |
+| Technology  | Version  | Purpose                 |
+| ----------- | -------- | ----------------------- |
 | **Node.js** | `22 LTS` | Runtime for build tools |
-| **npm** | `10+` | Package manager |
+| **npm**     | `10+`    | Package manager         |
 
 ### Core
 
-| Technology | Version | Purpose |
-| --- | --- | --- |
-| **React** | `19.2` | UI library (components, hooks, Suspense) |
-| **React DOM** | `19.2` | Browser rendering |
-| **TypeScript** | `5.7+` | Static typing and type safety |
-| **Vite** | `7.3.1` | Bundler and dev server (ESBuild + Rollup) |
+| Technology     | Version | Purpose                                   |
+| -------------- | ------- | ----------------------------------------- |
+| **React**      | `19.2`  | UI library (components, hooks, Suspense)  |
+| **React DOM**  | `19.2`  | Browser rendering                         |
+| **TypeScript** | `5.7+`  | Static typing and type safety             |
+| **Vite**       | `7.3.1` | Bundler and dev server (ESBuild + Rollup) |
 
 ### Routing and State
 
-| Technology | Version | Purpose |
-| --- | --- | --- |
-| **React Router** | `7+` | Declarative routing for SPA |
-| **TanStack Query** | `5+` | Cache, fetch, and remote data synchronization |
+| Technology         | Version | Purpose                                       |
+| ------------------ | ------- | --------------------------------------------- |
+| **React Router**   | `7+`    | Declarative routing for SPA                   |
+| **TanStack Query** | `5+`    | Cache, fetch, and remote data synchronization |
 
 ### Styling
 
-| Technology | Version | Purpose |
-| --- | --- | --- |
-| **CSS Modules** | (native Vite) | Local scope styles per component |
-| **CSS Custom Properties** | (native) | Design tokens and themes — see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) |
+| Technology                | Version       | Purpose                                                             |
+| ------------------------- | ------------- | ------------------------------------------------------------------- |
+| **CSS Modules**           | (native Vite) | Local scope styles per component                                    |
+| **CSS Custom Properties** | (native)      | Design tokens and themes — see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) |
 
 ### Quality and Testing
 
-| Technology | Version | Purpose |
-| --- | --- | --- |
-| **Vitest** | `3+` | Unit and integration tests (Vite-compatible) |
-| **React Testing Library** | `16+` | Component tests based on user behavior |
-| **Playwright** | `1.50+` | End-to-end (E2E) tests in real browser |
-| **ESLint** | `9+` | Static code linting |
-| **Prettier** | `3+` | Consistent code formatting |
+| Technology                | Version | Purpose                                      |
+| ------------------------- | ------- | -------------------------------------------- |
+| **Vitest**                | `3+`    | Unit and integration tests (Vite-compatible) |
+| **React Testing Library** | `16+`   | Component tests based on user behavior       |
+| **Playwright**            | `1.50+` | End-to-end (E2E) tests in real browser       |
+| **ESLint**                | `9+`    | Static code linting                          |
+| **Prettier**              | `3+`    | Consistent code formatting                   |
 
 ### Infrastructure
 
-| Technology | Version | Purpose |
-| --- | --- | --- |
-| **GitHub Actions** | — | CI/CD (lint, test, build, deploy) |
-| **GitHub Pages** | — | Static SPA hosting |
-| **semantic-release** | `24+` | Automated versioning and releases |
+| Technology           | Version | Purpose                           |
+| -------------------- | ------- | --------------------------------- |
+| **GitHub Actions**   | —       | CI/CD (lint, test, build, deploy) |
+| **GitHub Pages**     | —       | Static SPA hosting                |
+| **semantic-release** | `24+`   | Automated versioning and releases |
 
 > [!NOTE]
 > **Why not TailwindCSS?** The project opts for CSS Modules + Custom Properties to maintain zero style runtime dependencies, full control over the design system, and alignment with the OpenEV Data ecosystem's simplicity principle.
@@ -105,83 +105,96 @@ The project adopts an adaptation of **Feature-Sliced Design (FSD)**, a frontend 
 1. **Unidirectional dependency rule**: lower layers never import from upper layers, preventing circular dependencies.
 2. **Isolation by feature**: each feature is self-contained with its components, hooks, types, and styles.
 3. **Predictable scalability**: adding new features doesn't affect existing features.
-4. **Natural testability**: each slice is testable in isolation.
-5. **Facilitated onboarding**: the structure documents itself — a file's location reveals its responsibility.
+4. **Unidirectional dependency rule**: lower layers never import from upper layers, preventing circular dependencies.
+5. **Isolation by feature**: each feature is self-contained with its components, hooks, types, and styles.
+6. **Predictable scalability**: adding new features doesn't affect existing features.
+7. **Natural testability**: each slice is testable in isolation.
+8. **Facilitated onboarding**: the structure documents itself — a file's location reveals its responsibility.
 
 #### FSD Layers (from most restricted to most free)
 
-```
-┌─────────────────────────────────────────────────┐
-│  app/          → Bootstrap, providers, router   │  Application layer
-├─────────────────────────────────────────────────┤
-│  pages/        → Feature composition/routes     │  Pages (routes)
-├─────────────────────────────────────────────────┤
-│  features/     → User use cases                 │  Features
-├─────────────────────────────────────────────────┤
-│  entities/     → Domain models                  │  Entities
-├─────────────────────────────────────────────────┤
-│  shared/       → Reusable utilities             │  Infrastructure
-└─────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    classDef layer fill:#2a2a2a,stroke:#444,color:#fff,rx:5,ry:5,font-weight:bold;
+
+    app[app/ <br> <small>Application Layer</small>]:::layer
+    pages[pages/ <br> <small>Pages Layer</small>]:::layer
+    features[features/ <br> <small>Features Layer</small>]:::layer
+    entities[entities/ <br> <small>Entities Layer</small>]:::layer
+    shared[shared/ <br> <small>Infrastructure Layer</small>]:::layer
+
+    app --> pages
+    pages --> features
+    features --> entities
+    entities --> shared
 ```
 
 **Fundamental rule**: each layer can only import from the layer **below** it, never from layers above or from different slices at the same level.
 
-```
-app → pages → features → entities → shared
- ↓      ↓        ↓           ↓
- OK     OK       OK          OK     (import from lower layers)
- ✗      ✗        ✗           ✗      (import from upper layers)
+```mermaid
+graph TD
+    app[app] --> pages[pages]
+    pages --> features[features]
+    features --> entities[entities]
+    entities --> shared[shared]
+
+    subgraph Allowed_Imports ["Allowed Dependency Flow"]
+        direction TB
+        note[⬇️ Imports must always point downwards]
+    end
+
+    style app fill:#1f2937,stroke:#374151,color:#fff
+    style pages fill:#1f2937,stroke:#374151,color:#fff
+    style features fill:#1f2937,stroke:#374151,color:#fff
+    style entities fill:#1f2937,stroke:#374151,color:#fff
+    style shared fill:#1f2937,stroke:#374151,color:#fff
+    style Allowed_Imports fill:none,stroke:none,color:#fff
 ```
 
 #### Layer Details
 
-| Layer | Responsibility | Example |
-| --- | --- | --- |
-| `app/` | Application initialization: providers (QueryClient, Router, Theme), global layout, error boundary configuration | `App.tsx`, `providers.tsx`, `router.tsx` |
-| `pages/` | Feature composition into routes. Each page is a component that orchestrates features and entities | `HomePage`, `VehicleDetailPage`, `ComparePage` |
-| `features/` | Use case logic with UI. Each feature is an isolated slice with its own components, hooks, and types | `vehicle-search/`, `vehicle-filter/`, `vehicle-compare/` |
-| `entities/` | Business domain models. TypeScript types, entity display components, and data access hooks | `vehicle/` (types, card, TanStack Query hooks) |
-| `shared/` | Reusable code without domain logic: generic UI components, utility hooks, constants, helpers, design tokens | `ui/`, `lib/`, `config/`, `types/` |
+| Layer       | Responsibility                                                                                                  | Example                                                  |
+| ----------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `app/`      | Application initialization: providers (QueryClient, Router, Theme), global layout, error boundary configuration | `App.tsx`, `providers.tsx`, `router.tsx`                 |
+| `pages/`    | Feature composition into routes. Each page is a component that orchestrates features and entities               | `HomePage`, `VehicleDetailPage`, `ComparePage`           |
+| `features/` | Use case logic with UI. Each feature is an isolated slice with its own components, hooks, and types             | `vehicle-search/`, `vehicle-filter/`, `vehicle-compare/` |
+| `entities/` | Business domain models. TypeScript types, entity display components, and data access hooks                      | `vehicle/` (types, card, TanStack Query hooks)           |
+| `shared/`   | Reusable code without domain logic: generic UI components, utility hooks, constants, helpers, design tokens     | `ui/`, `lib/`, `config/`, `types/`                       |
 
 ### Data Flow
 
 The diagram below illustrates how data flows from the source (GitHub Releases) to rendering on the user's screen:
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                      GitHub Releases API                         │
-│  api.github.com/repos/open-ev-data/open-ev-data-dataset/...     │
-└──────────────────────┬───────────────────────────────────────────┘
-                       │ (1) GET latest release → tag_name
-                       ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                    GitHub Release Asset                           │
-│  .../releases/download/{tag}/open-ev-data-{tag}.json             │
-└──────────────────────┬───────────────────────────────────────────┘
-                       │ (2) GET complete JSON (~3MB)
-                       ▼
-┌──────────────────────────────────────────────────────────────────┐
-│               TanStack Query Cache (in-memory)                   │
-│  • staleTime: configurable                                       │
-│  • gcTime: session duration                                      │
-│  • Suspense boundaries for loading states                        │
-└──────────────────────┬───────────────────────────────────────────┘
-                       │ (3) Normalized data available
-                       ▼
-┌──────────────────────────────────────────────────────────────────┐
-│             React Components (via hooks)                          │
-│  useVehicles() → filtered/paginated list                         │
-│  useVehicle(code) → specific vehicle                             │
-│  useMakes() → manufacturer list                                  │
-└──────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph GitHub["GitHub Releases API"]
+        A[api.github.com/.../releases/latest]
+    end
+
+    subgraph Assets["GitHub Release Asset"]
+        B[".../download/{tag}/open-ev-data-{tag}.json"]
+    end
+
+    subgraph Client["Client Side"]
+        C[TanStack Query Cache]
+        D[React Components]
+    end
+
+    A -- "(1) GET latest tag" --> B
+    B -- "(2) GET complete JSON (~3MB)" --> C
+    C -- "(3) Normalized data" --> D
+
+    style GitHub fill:#1f2937,stroke:#374151,color:#fff
+    style Assets fill:#1f2937,stroke:#374151,color:#fff
+    style Client fill:#111827,stroke:#374151,color:#fff
 ```
 
 #### Two-Step Fetch Strategy
 
 Data fetching follows a two-step process to ensure the UI always consumes the latest available version:
 
-1. **Version discovery**: `GET https://api.github.com/repos/open-ev-data/open-ev-data-dataset/releases/latest` → extract the `tag_name` (e.g., `v1.24.0`).
-2. **Dataset download**: `GET https://github.com/open-ev-data/open-ev-data-dataset/releases/download/{tag}/open-ev-data-{tag}.json` → load the complete JSON.
+1.  **Version discovery**: `GET https://api.github.com/repos/open-ev-data/open-ev-data-dataset/releases/latest` → extract the `tag_name` (e.g., `v1.24.0`).
+2.  **Dataset download**: `GET https://github.com/open-ev-data/open-ev-data-dataset/releases/download/{tag}/open-ev-data-{tag}.json` → load the complete JSON.
 
 > [!IMPORTANT]
 > GitHub's public API has a rate limit of **60 requests/hour** for unauthenticated calls. TanStack Query should configure `staleTime` appropriately (e.g., 30 minutes) to avoid unnecessary refetches during the user's session.
@@ -193,33 +206,43 @@ Data fetching follows a two-step process to ensure the UI always consumes the la
 The following principles guide all design and implementation decisions for this project:
 
 ### 1. Separation of Concerns (SoC)
+
 Each module, component, and function should have a single, clear responsibility. UI components don't fetch data; data hooks don't render; utilities don't know about domain.
 
 ### 2. Dependency Inversion
+
 Upper layers (pages, features) depend on abstractions from lower layers (entities, shared), never the reverse. This makes it possible to swap internal implementations without affecting consumers.
 
 ### 3. Composition over Inheritance
+
 Components are built through composition. Prefer `children`, render props, and custom hooks instead of inheritance hierarchies or "god" components with excessive props.
 
 ### 4. Colocation
+
 Related files stay close to each other. Styles, tests, types, and components of a feature live inside the feature's directory, not in separate global folders.
 
 ### 5. Explicit Contracts
+
 Every public interface (component props, hook return, function parameters) must be explicitly typed with TypeScript. Avoid `any` — use `unknown` when the actual type is not known.
 
 ### 6. Immutable Data
+
 Never mutate state directly. Use immutable patterns (spread, `map`, `filter`) and leverage React's functional paradigm (computed derived states, not stored ones).
 
 ### 7. Fail-Fast with Graceful Degradation
+
 Errors should be caught as early as possible (compile-time validation via TypeScript), and when inevitable at runtime, handled with Error Boundaries and fallback UI that keeps the user informed.
 
 ### 8. Accessibility by Default (a11y)
+
 Components should be accessible from the first implementation: semantic HTML, ARIA attributes when necessary, keyboard navigation support, and adequate contrast.
 
 ### 9. Performance as a Feature
+
 Lazy loading of routes via `React.lazy`, conscious memoization (`useMemo`, `useCallback` where measurable), and progressive data loading with Suspense boundaries.
 
 ### 10. Convention over Configuration
+
 File names, directory structure, and export patterns follow consistent, documented conventions, minimizing the need for case-by-case configuration.
 
 ---
@@ -357,16 +380,16 @@ open-ev-data-ui/
 
 ### Naming Conventions
 
-| Type | Convention | Example |
-| --- | --- | --- |
-| React components | `PascalCase` | `VehicleCard.tsx` |
-| Custom hooks | `camelCase` with `use` prefix | `use-vehicles.ts` |
-| Utilities and helpers | `camelCase` | `format.ts` |
-| Type files | `.types.ts` suffix | `vehicle.types.ts` |
-| CSS Modules | `.module.css` suffix | `VehicleCard.module.css` |
-| Tests | `.test.tsx` or `.test.ts` suffix | `VehicleCard.test.tsx` |
-| Directories | `kebab-case` | `vehicle-search/` |
-| Barrel exports | `index.ts` | Each feature/entity exposes public API via `index.ts` |
+| Type                  | Convention                       | Example                                               |
+| --------------------- | -------------------------------- | ----------------------------------------------------- |
+| React components      | `PascalCase`                     | `VehicleCard.tsx`                                     |
+| Custom hooks          | `camelCase` with `use` prefix    | `use-vehicles.ts`                                     |
+| Utilities and helpers | `camelCase`                      | `format.ts`                                           |
+| Type files            | `.types.ts` suffix               | `vehicle.types.ts`                                    |
+| CSS Modules           | `.module.css` suffix             | `VehicleCard.module.css`                              |
+| Tests                 | `.test.tsx` or `.test.ts` suffix | `VehicleCard.test.tsx`                                |
+| Directories           | `kebab-case`                     | `vehicle-search/`                                     |
+| Barrel exports        | `index.ts`                       | Each feature/entity exposes public API via `index.ts` |
 
 ---
 
@@ -377,24 +400,30 @@ open-ev-data-ui/
 Components follow a clear three-layer hierarchy:
 
 #### 1. UI Components (`shared/ui/`)
+
 Purely visual components without domain logic. They receive data via props and emit events via callbacks. They are reusable in any context.
 
 ```tsx
 // ✅ Correct: generic component, no knowledge of "vehicle"
 interface ButtonProps {
-  variant: 'primary' | 'secondary' | 'ghost';
-  size: 'sm' | 'md' | 'lg';
+  variant: "primary" | "secondary" | "ghost";
+  size: "sm" | "md" | "lg";
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
 }
 
 export function Button({ variant, size, children, ...rest }: ButtonProps) {
-  return <button className={styles[variant]} {...rest}>{children}</button>;
+  return (
+    <button className={styles[variant]} {...rest}>
+      {children}
+    </button>
+  );
 }
 ```
 
 #### 2. Entity Components (`entities/*/ui/`)
+
 Components that visually represent a domain entity. They know the `Vehicle` type but have no use case logic.
 
 ```tsx
@@ -407,7 +436,9 @@ interface VehicleCardProps {
 export function VehicleCard({ vehicle, onSelect }: VehicleCardProps) {
   return (
     <Card onClick={() => onSelect?.(vehicle.unique_code)}>
-      <h3>{vehicle.make.name} {vehicle.model.name}</h3>
+      <h3>
+        {vehicle.make.name} {vehicle.model.name}
+      </h3>
       <Badge>{vehicle.year}</Badge>
       {/* ... */}
     </Card>
@@ -416,6 +447,7 @@ export function VehicleCard({ vehicle, onSelect }: VehicleCardProps) {
 ```
 
 #### 3. Feature Components (`features/*/ui/`)
+
 Components that implement a complete use case. They connect hooks, local state, and components from lower layers.
 
 ```tsx
@@ -425,7 +457,11 @@ export function SearchBar() {
 
   return (
     <div className={styles.searchBar}>
-      <Input value={query} onChange={setQuery} placeholder="Search vehicles..." />
+      <Input
+        value={query}
+        onChange={setQuery}
+        placeholder="Search vehicles..."
+      />
       <SearchResults results={results} />
     </div>
   );
@@ -434,15 +470,15 @@ export function SearchBar() {
 
 ### Component Rules
 
-1. **Export via barrel (`index.ts`)**: each feature and entity exposes only its public API. Consumers import from `@/features/vehicle-search`, never from internal paths.
+1.  **Export via barrel (`index.ts`)**: each feature and entity exposes only its public API. Consumers import from `@/features/vehicle-search`, never from internal paths.
 
-2. **Explicit props**: never use `React.FC` (legacy). Declare an `interface` for props and use function declaration or arrow function.
+2.  **Explicit props**: never use `React.FC` (legacy). Declare an `interface` for props and use function declaration or arrow function.
 
-3. **Style composition**: use CSS Modules for local scope. Variants and states via composed classes, never inline styles for visual logic.
+3.  **Style composition**: use CSS Modules for local scope. Variants and states via composed classes, never inline styles for visual logic.
 
-4. **Components without side effects**: components don't trigger `fetch` directly. All data access goes through TanStack Query hooks, injected via custom hooks in the `api/` or `model/` layer.
+4.  **Components without side effects**: components don't trigger `fetch` directly. All data access goes through TanStack Query hooks, injected via custom hooks in the `api/` or `model/` layer.
 
-5. **Maximum limit**: if a component exceeds ~150 lines or receives more than ~8 props, it should be decomposed into smaller components.
+5.  **Maximum limit**: if a component exceeds ~150 lines or receives more than ~8 props, it should be decomposed into smaller components.
 
 ---
 
@@ -451,6 +487,7 @@ export function SearchBar() {
 Application state is divided into three categories with distinct strategies:
 
 ### 1. Server State
+
 Managed entirely by **TanStack Query**. Includes vehicle data fetched from GitHub.
 
 ```tsx
@@ -465,15 +502,16 @@ export async function fetchLatestDataset(): Promise<VehicleDataset> {
 // entities/vehicle/api/use-vehicles.ts
 export function useVehicles() {
   return useQuery({
-    queryKey: ['vehicles'],
+    queryKey: ["vehicles"],
     queryFn: fetchLatestDataset,
-    staleTime: 30 * 60 * 1000,       // 30 minutes
-    select: (data) => data.vehicles,  // Extract only the array
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    select: (data) => data.vehicles, // Extract only the array
   });
 }
 ```
 
 ### 2. UI State
+
 Component local state managed with `useState` and `useReducer`. Includes: active filters, search term, modal open/closed, selected vehicles for comparison.
 
 ```tsx
@@ -483,16 +521,17 @@ const { data: vehicles } = useVehicles();
 
 const filtered = useMemo(
   () => applyFilters(vehicles ?? [], filters),
-  [vehicles, filters]
+  [vehicles, filters],
 );
 ```
 
 ### 3. URL State
+
 Search parameters and filters that should be shareable via URL are synchronized with React Router's `searchParams`.
 
 ```tsx
 const [searchParams, setSearchParams] = useSearchParams();
-const make = searchParams.get('make');
+const make = searchParams.get("make");
 ```
 
 > [!TIP]
@@ -506,10 +545,10 @@ const make = searchParams.get('make');
 
 The project has a single data source: the **canonical JSON** published as a release asset in the `open-ev-data-dataset` repository.
 
-| Endpoint | Method | Purpose |
-| --- | --- | --- |
-| `api.github.com/.../releases/latest` | `GET` | Discover the latest release `tag_name` |
-| `github.com/.../releases/download/{tag}/open-ev-data-{tag}.json` | `GET` | Download the complete dataset |
+| Endpoint                                                         | Method | Purpose                                |
+| ---------------------------------------------------------------- | ------ | -------------------------------------- |
+| `api.github.com/.../releases/latest`                             | `GET`  | Discover the latest release `tag_name` |
+| `github.com/.../releases/download/{tag}/open-ev-data-{tag}.json` | `GET`  | Download the complete dataset          |
 
 ### JSON Structure
 
@@ -520,7 +559,9 @@ The JSON file follows the structure defined in the data repository's [`schema.js
   "schema_version": "1.0.0",
   "generated_at": "2025-12-30T18:57:12Z",
   "vehicle_count": 406,
-  "vehicles": [ /* array of canonical vehicles */ ],
+  "vehicles": [
+    /* array of canonical vehicles */
+  ],
   "metadata": { "etl_version": "...", "dataset_commit": "..." }
 }
 ```
@@ -555,9 +596,16 @@ export interface SlugName {
 }
 
 export type VehicleType =
-  | 'passenger_car' | 'suv' | 'pickup' | 'van'
-  | 'bus' | 'motorcycle' | 'scooter'
-  | 'commercial' | 'truck' | 'other';
+  | "passenger_car"
+  | "suv"
+  | "pickup"
+  | "van"
+  | "bus"
+  | "motorcycle"
+  | "scooter"
+  | "commercial"
+  | "truck"
+  | "other";
 ```
 
 ---
@@ -568,40 +616,45 @@ The application uses **React Router v7** with lazy loading of routes to optimize
 
 ### Route Map
 
-| Route | Page | Description |
-| --- | --- | --- |
-| `/` | `HomePage` | Vehicle list with search and filters |
-| `/vehicle/:code` | `VehicleDetailPage` | Complete details of a vehicle |
-| `/compare` | `ComparePage` | Side-by-side vehicle comparison |
-| `*` | `NotFoundPage` | 404 page |
+| Route            | Page                | Description                          |
+| ---------------- | ------------------- | ------------------------------------ |
+| `/`              | `HomePage`          | Vehicle list with search and filters |
+| `/vehicle/:code` | `VehicleDetailPage` | Complete details of a vehicle        |
+| `/compare`       | `ComparePage`       | Side-by-side vehicle comparison      |
+| `*`              | `NotFoundPage`      | 404 page                             |
 
 ### Configuration
 
 ```tsx
 // app/router.tsx
-import { lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { lazy } from "react";
+import { createBrowserRouter } from "react-router-dom";
 
-const HomePage = lazy(() => import('@/pages/home/HomePage'));
-const VehicleDetailPage = lazy(() => import('@/pages/vehicle-detail/VehicleDetailPage'));
-const ComparePage = lazy(() => import('@/pages/compare/ComparePage'));
-const NotFoundPage = lazy(() => import('@/pages/not-found/NotFoundPage'));
+const HomePage = lazy(() => import("@/pages/home/HomePage"));
+const VehicleDetailPage = lazy(
+  () => import("@/pages/vehicle-detail/VehicleDetailPage"),
+);
+const ComparePage = lazy(() => import("@/pages/compare/ComparePage"));
+const NotFoundPage = lazy(() => import("@/pages/not-found/NotFoundPage"));
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <AppLayout />,
+      errorElement: <ErrorBoundary />,
+      children: [
+        { index: true, element: <HomePage /> },
+        { path: "vehicle/:code", element: <VehicleDetailPage /> },
+        { path: "compare", element: <ComparePage /> },
+        { path: "*", element: <NotFoundPage /> },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <AppLayout />,
-    errorElement: <ErrorBoundary />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: 'vehicle/:code', element: <VehicleDetailPage /> },
-      { path: 'compare', element: <ComparePage /> },
-      { path: '*', element: <NotFoundPage /> },
-    ],
+    basename: "/open-ev-data-ui", // Required for GitHub Pages
   },
-], {
-  basename: '/open-ev-data-ui',  // Required for GitHub Pages
-});
+);
 ```
 
 > [!WARNING]
@@ -615,85 +668,98 @@ The testing strategy follows the **testing pyramid** adapted for React frontend 
 
 ### Testing Pyramid
 
-```
-         ╱ ╲
-        ╱ E2E ╲           → Playwright (few, critical scenarios)
-       ╱───────╲
-      ╱  Integr. ╲        → Vitest + RTL (complete features)
-     ╱─────────────╲
-    ╱    Unit        ╲    → Vitest (helpers, hooks, pure components)
-   ╱───────────────────╲
+```mermaid
+block-beta
+  columns 5
+  space:2
+  E2E["E2E Tests (Playwright)"]:1
+  space:2
+
+  space:1
+  Integration["Integration Tests (Vitest + RTL)"]:3
+  space:1
+
+  Unit["Unit Tests (Vitest)"]:5
+
+  style E2E fill:#4b5563,stroke:#6b7280,color:#fff
+  style Integration fill:#374151,stroke:#4b5563,color:#fff
+  style Unit fill:#1f2937,stroke:#374151,color:#fff
 ```
 
 ### Test Layers
 
 #### 1. Unit Tests (Vitest)
+
 - **Scope**: pure functions in `shared/lib/`, isolated hooks, UI components without dependencies.
 - **Location**: placed alongside the tested file (`Button.test.tsx` next to `Button.tsx`).
 - **Goal**: ensure individual units operate correctly in isolation.
 
 ```tsx
 // shared/lib/format.test.ts
-import { formatPower } from './format';
+import { formatPower } from "./format";
 
-describe('formatPower', () => {
-  it('formats kilowatts correctly', () => {
-    expect(formatPower(150)).toBe('150 kW');
+describe("formatPower", () => {
+  it("formats kilowatts correctly", () => {
+    expect(formatPower(150)).toBe("150 kW");
   });
 
   it('returns "—" for undefined values', () => {
-    expect(formatPower(undefined)).toBe('—');
+    expect(formatPower(undefined)).toBe("—");
   });
 });
 ```
 
 #### 2. Integration Tests (Vitest + React Testing Library)
+
 - **Scope**: complete features rendered with mocked providers (QueryClient, Router).
 - **Location**: `.test.tsx` file inside the feature or page directory.
 - **Goal**: verify components interact correctly with each other and with mocked data.
 
 ```tsx
 // features/vehicle-search/ui/SearchBar.test.tsx
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { SearchBar } from './SearchBar';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { SearchBar } from "./SearchBar";
 // ... providers wrapper with QueryClient mock
 
-it('filters vehicles when typing in search field', async () => {
+it("filters vehicles when typing in search field", async () => {
   render(<SearchBar />, { wrapper: TestProviders });
-  const input = screen.getByPlaceholderText('Search vehicles...');
-  await userEvent.type(input, 'Tesla');
-  expect(screen.getByText('Tesla Model 3')).toBeInTheDocument();
+  const input = screen.getByPlaceholderText("Search vehicles...");
+  await userEvent.type(input, "Tesla");
+  expect(screen.getByText("Tesla Model 3")).toBeInTheDocument();
 });
 ```
 
 #### 3. End-to-End Tests (Playwright)
+
 - **Scope**: complete user flows in real browser.
 - **Location**: `e2e/` directory at project root.
 - **Goal**: validate critical flows end-to-end (search vehicle, view details, compare).
 
 ```tsx
 // e2e/home.spec.ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('user searches for a vehicle and views details', async ({ page }) => {
-  await page.goto('/');
-  await page.getByPlaceholder('Search vehicles...').fill('Model 3');
-  await page.getByText('Tesla Model 3').click();
-  await expect(page.getByRole('heading', { name: /Tesla Model 3/ })).toBeVisible();
+test("user searches for a vehicle and views details", async ({ page }) => {
+  await page.goto("/");
+  await page.getByPlaceholder("Search vehicles...").fill("Model 3");
+  await page.getByText("Tesla Model 3").click();
+  await expect(
+    page.getByRole("heading", { name: /Tesla Model 3/ }),
+  ).toBeVisible();
 });
 ```
 
 ### Minimum Coverage
 
-| Layer | Coverage Target | Predominant Test Type |
-| --- | --- | --- |
-| `shared/lib/` | 90%+ | Unit |
-| `shared/ui/` | 80%+ | Unit + Snapshot |
-| `entities/` | 80%+ | Integration |
-| `features/` | 70%+ | Integration |
-| `pages/` | 60%+ | Integration |
-| Critical flows | 100% of main flows | E2E |
+| Layer          | Coverage Target    | Predominant Test Type |
+| -------------- | ------------------ | --------------------- |
+| `shared/lib/`  | 90%+               | Unit                  |
+| `shared/ui/`   | 80%+               | Unit + Snapshot       |
+| `entities/`    | 80%+               | Integration           |
+| `features/`    | 70%+               | Integration           |
+| `pages/`       | 60%+               | Integration           |
+| Critical flows | 100% of main flows | E2E                   |
 
 ---
 
@@ -713,10 +779,10 @@ jobs:
       - Checkout
       - Setup Node.js 22
       - npm ci
-      - npm run lint          # ESLint
-      - npm run type-check    # tsc --noEmit
-      - npm run test          # Vitest
-      - npm run build         # Vite build
+      - npm run lint # ESLint
+      - npm run type-check # tsc --noEmit
+      - npm run test # Vitest
+      - npm run build # Vite build
 ```
 
 ### Deployment Pipeline (GitHub Pages)
@@ -743,8 +809,8 @@ jobs:
 
 The project uses **semantic-release** for automatic versioning based on [Conventional Commits](https://www.conventionalcommits.org/):
 
-| Prefix | Release Type | Example |
-| --- | --- | --- |
-| `fix:` | Patch (`1.0.x`) | `fix: correct manufacturer filter` |
-| `feat:` | Minor (`1.x.0`) | `feat: add comparison page` |
-| `BREAKING CHANGE:` | Major (`x.0.0`) | Public API changes |
+| Prefix             | Release Type    | Example                            |
+| ------------------ | --------------- | ---------------------------------- |
+| `fix:`             | Patch (`1.0.x`) | `fix: correct manufacturer filter` |
+| `feat:`            | Minor (`1.x.0`) | `feat: add comparison page`        |
+| `BREAKING CHANGE:` | Major (`x.0.0`) | Public API changes                 |

@@ -4,9 +4,9 @@ This document outlines the SEO approach for maximizing discoverability of the Op
 
 ### Related Documents
 
-| Document | Scope |
-| --- | --- |
-| [Architecture](ARCHITECTURE.md) | Deployment and routing setup |
+| Document                                            | Scope                             |
+| --------------------------------------------------- | --------------------------------- |
+| [Architecture](ARCHITECTURE.md)                     | Deployment and routing setup      |
 | [Task 0009](../TODO/tasks/0009-seo-optimization.md) | Detailed implementation checklist |
 
 ## Table of Contents
@@ -42,25 +42,33 @@ Single-Page Applications (SPAs) face inherent SEO challenges:
 
 ### 1. Hybrid Rendering Approach
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  Build Time (GitHub Actions)                            │
-│  ├── Vite build (standard SPA)                          │
-│  └── Prerender key pages:                               │
-│      ├── / (home page with vehicle grid)                │
-│      ├── /vehicle/tesla-model-3-2024-long-range         │
-│      ├── /vehicle/byd-seal-2024-awd-performance         │
-│      └── ... (top 50 vehicles)                          │
-└─────────────────────────────────────────────────────────┘
-         ↓
-┌─────────────────────────────────────────────────────────┐
-│  Output (GitHub Pages)                                   │
-│  ├── index.html (SPA shell)                             │
-│  ├── vehicle/                                            │
-│  │   ├── tesla-model-3-2024/index.html (prerendered)   │
-│  │   └── byd-seal-2024/index.html (prerendered)        │
-│  └── sitemap.xml (all 400+ vehicles)                    │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph Build["Build Time (GitHub Actions)"]
+        direction TB
+        Vite[Vite build - standard SPA]
+        Prerender[Prerender key pages]
+
+        Vite --> Prerender
+        Prerender -- "/ (home)" --> P1
+        Prerender -- "/vehicle/tesla-..." --> P2
+        Prerender -- "/vehicle/byd-..." --> P3
+    end
+
+    subgraph Output["Output (GitHub Pages)"]
+        direction TB
+        Index["index.html (SPA shell)"]
+        Folder["vehicle/"]
+        Sitemap["sitemap.xml"]
+
+        Folder --> F1["tesla-model-3/index.html"]
+        Folder --> F2["byd-seal/index.html"]
+    end
+
+    Build --> Output
+
+    style Build fill:#1f2937,stroke:#374151,color:#fff
+    style Output fill:#111827,stroke:#374151,color:#fff
 ```
 
 **Result**: Crawlers see full HTML. Users get instant hydration. Best of both worlds.
@@ -75,7 +83,7 @@ Every page must have:
 
 ```tsx
 // Example: Vehicle Detail Page
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 export function VehicleDetailPage({ vehicle }: Props) {
   const title = `${vehicle.make.name} ${vehicle.model.name} ${vehicle.year} - Full Specs`;
@@ -112,20 +120,20 @@ export function VehicleDetailPage({ vehicle }: Props) {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Product",
-            "name": `${vehicle.make.name} ${vehicle.model.name}`,
-            "brand": {
+            name: `${vehicle.make.name} ${vehicle.model.name}`,
+            brand: {
               "@type": "Brand",
-              "name": vehicle.make.name
+              name: vehicle.make.name,
             },
-            "model": vehicle.model.name,
-            "offers": {
+            model: vehicle.model.name,
+            offers: {
               "@type": "Offer",
-              "price": vehicle.pricing?.msrp?.[0]?.amount,
-              "priceCurrency": vehicle.pricing?.msrp?.[0]?.currency,
-              "availability": "https://schema.org/InStock"
+              price: vehicle.pricing?.msrp?.[0]?.amount,
+              priceCurrency: vehicle.pricing?.msrp?.[0]?.currency,
+              availability: "https://schema.org/InStock",
             },
-            "description": description,
-            "image": image
+            description: description,
+            image: image,
           })}
         </script>
       </Helmet>
@@ -140,13 +148,13 @@ export function VehicleDetailPage({ vehicle }: Props) {
 
 Implement these schema.org types:
 
-| Page | Schema Type | Priority |
-| --- | --- | --- |
-| Home | WebSite + SearchAction | High |
-| Vehicle Detail | Product | Critical |
-| Compare | ItemList | Medium |
-| All pages | BreadcrumbList | Medium |
-| Footer | Organization | Low |
+| Page           | Schema Type            | Priority |
+| -------------- | ---------------------- | -------- |
+| Home           | WebSite + SearchAction | High     |
+| Vehicle Detail | Product                | Critical |
+| Compare        | ItemList               | Medium   |
+| All pages      | BreadcrumbList         | Medium   |
+| Footer         | Organization           | Low      |
 
 ---
 
@@ -155,12 +163,14 @@ Implement these schema.org types:
 ### Keyword Research
 
 Primary keywords (high volume, medium competition):
+
 - "electric vehicle specs"
 - "EV battery comparison"
 - "electric car charging speed"
 - "{brand} {model} specifications"
 
 Long-tail keywords (low competition, high intent):
+
 - "{brand} {model} {year} real world range"
 - "compare {vehicle1} vs {vehicle2}"
 - "{brand} {model} DC charging curve"
@@ -170,6 +180,7 @@ Long-tail keywords (low competition, high intent):
 Each vehicle page should include:
 
 1. **Descriptive paragraph** (150-200 words):
+
    ```
    The {Make} {Model} is a {type} electric vehicle introduced in {year}.
    With a {battery}kWh battery and {range}km WLTP range, it targets the
@@ -194,11 +205,11 @@ SEO in 2024+ is heavily influenced by Core Web Vitals:
 
 ### Target Metrics
 
-| Metric | Target | Current | Strategy |
-| --- | --- | --- | --- |
-| **LCP** | < 2.5s | TBD | Optimize images, preload fonts, code splitting |
-| **INP** | < 200ms | TBD | Debounce filters, virtualize lists, memoization |
-| **CLS** | < 0.1 | TBD | Reserve image space, avoid dynamic injection |
+| Metric  | Target  | Current | Strategy                                        |
+| ------- | ------- | ------- | ----------------------------------------------- |
+| **LCP** | < 2.5s  | TBD     | Optimize images, preload fonts, code splitting  |
+| **INP** | < 200ms | TBD     | Debounce filters, virtualize lists, memoization |
+| **CLS** | < 0.1   | TBD     | Reserve image space, avoid dynamic injection    |
 
 ### Optimization Checklist
 
@@ -238,14 +249,14 @@ SEO in 2024+ is heavily influenced by Core Web Vitals:
 
 ### Success Metrics (3 months post-launch)
 
-| Metric | Target |
-| --- | --- |
-| Indexed pages | > 300 (out of 400+ vehicles) |
-| Organic search impressions | > 1000/month |
-| Average position | < 20 (top 2 pages) |
-| Click-through rate | > 3% |
-| PageSpeed score | > 90 (mobile & desktop) |
-| Lighthouse SEO | 100 |
+| Metric                     | Target                       |
+| -------------------------- | ---------------------------- |
+| Indexed pages              | > 300 (out of 400+ vehicles) |
+| Organic search impressions | > 1000/month                 |
+| Average position           | < 20 (top 2 pages)           |
+| Click-through rate         | > 3%                         |
+| PageSpeed score            | > 90 (mobile & desktop)      |
+| Lighthouse SEO             | 100                          |
 
 ---
 
@@ -257,10 +268,11 @@ Detect crawlers and serve prerendered HTML:
 
 ```typescript
 // Cloudflare Worker or similar
-const CRAWLER_USER_AGENTS = /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandex|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator/i;
+const CRAWLER_USER_AGENTS =
+  /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandex|facebookexternalhit|twitterbot|rogerbot|linkedinbot|embedly|quora link preview|showyoubot|outbrain|pinterest|slackbot|vkShare|W3C_Validator/i;
 
 export async function handleRequest(request: Request) {
-  const userAgent = request.headers.get('user-agent') || '';
+  const userAgent = request.headers.get("user-agent") || "";
 
   if (CRAWLER_USER_AGENTS.test(userAgent)) {
     // Serve prerendered HTML
@@ -285,6 +297,7 @@ Generate RSS feed of newly added vehicles for blog/news site syndication.
 ## Common Pitfalls to Avoid
 
 ❌ **Don't**:
+
 - Use hash-based routing (`#/vehicle/123`) — not SEO-friendly
 - Block crawlers with aggressive `robots.txt`
 - Forget canonical URLs → duplicate content penalties
@@ -292,6 +305,7 @@ Generate RSS feed of newly added vehicles for blog/news site syndication.
 - Overuse keywords → keyword stuffing penalty
 
 ✅ **Do**:
+
 - Use history-based routing (`/vehicle/123`)
 - Allow all crawlers (`User-agent: *\nAllow: /`)
 - Set canonical on every page
