@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { X } from 'lucide-react';
 import type { Vehicle } from '@/entities/vehicle';
 import { useVehicles } from '@/entities/vehicle';
 import { useVehicleFilters, FilterPanel } from '@/features/vehicle-filter';
@@ -11,7 +12,8 @@ import styles from './Page.module.css';
 
 export function HomePage() {
   const { data: vehicles, isLoading, error: queryError, refetch } = useVehicles();
-  const { filters, updateFilter, applyFilters, resetFilters } = useVehicleFilters();
+  const { filters, updateFilter, applyFilters, resetFilters, getActiveFilters, removeFilter } =
+    useVehicleFilters();
   const { addToCompare, comparedVehicles } = useComparison();
 
   const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -58,6 +60,24 @@ export function HomePage() {
             All Vehicles
             {!isLoading && <span className={styles.count}>({filteredVehicles.length})</span>}
           </h1>
+
+          <div className={styles.activeFilters}>
+            {getActiveFilters().map((filter) => (
+              <div key={filter.key} className={styles.filterTag}>
+                <span className={styles.tagName}>
+                  {filter.key.replace(/([A-Z])/g, ' $1').toLowerCase()}:
+                </span>
+                <span className={styles.tagValue}>{filter.label}</span>
+                <button
+                  className={styles.removeTag}
+                  onClick={() => removeFilter(filter.key)}
+                  aria-label={`Remove ${filter.key} filter`}
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
 
           <div className={styles.headerActions}>
             <Button

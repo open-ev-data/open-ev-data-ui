@@ -8,6 +8,7 @@ export interface RangeFilter {
 }
 
 export interface VehicleFilters {
+  search?: string;
   priceRange?: RangeFilter;
   rangeKm?: RangeFilter;
   batteryKwh?: RangeFilter;
@@ -19,6 +20,7 @@ export interface VehicleFilters {
 }
 
 export const DEFAULT_FILTERS: VehicleFilters = {
+  search: '',
   vehicleTypes: [],
   drivetrains: [],
   availabilityStatus: [],

@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import { useVehicleFilters } from '../model/use-vehicle-filters';
 import type { VehicleType } from '@/entities/vehicle';
 import type { Drivetrain } from '../model/filter.types';
@@ -58,6 +59,16 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
           <button type="button" className={styles.clearButton} onClick={resetFilters}>
             Clear all
           </button>
+        </div>
+        <div className={styles.searchWrapper}>
+          <input
+            type="text"
+            placeholder="Search make, model..."
+            className={styles.searchInput}
+            value={filters.search || ''}
+            onChange={(e) => updateFilter('search', e.target.value)}
+          />
+          <Search className={styles.searchIcon} size={16} />
         </div>
       </div>
 

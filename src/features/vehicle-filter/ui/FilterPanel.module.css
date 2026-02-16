@@ -17,6 +17,39 @@
   padding: var(--space-6) var(--space-6) 0 var(--space-6);
 }
 
+.searchWrapper {
+  position: relative;
+  margin-bottom: var(--space-4);
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  padding-right: var(--space-8);
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 10px hsla(180, 80%, 50%, 0.2);
+}
+
+.searchIcon {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-xs);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .scrollArea {
   padding: 0 var(--space-6) var(--space-6) var(--space-6);
   overflow-y: auto;

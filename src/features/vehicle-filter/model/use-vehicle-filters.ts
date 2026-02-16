@@ -23,9 +23,67 @@ export function useVehicleFilters(initialFilters?: Partial<VehicleFilters>) {
     setFilters(DEFAULT_FILTERS);
   }, []);
 
+  const getActiveFilters = useCallback(() => {
+    const activeFiltersList: {
+      key: keyof VehicleFilters;
+      value: VehicleFilters[keyof VehicleFilters];
+      label: string;
+    }[] = [];
+
+    // Helper to format values
+    const formatValue = (key: keyof VehicleFilters, value: any) => {
+      if (Array.isArray(value)) return `${value.length} selected`;
+      if (typeof value === 'object' && value !== null && 'min' in value)
+        return `${value.min} - ${value.max}`;
+      return String(value);
+    };
+
+    for (const key in filters) {
+      const filterKey = key as keyof VehicleFilters;
+      const currentValue = filters[filterKey];
+      const defaultValue = DEFAULT_FILTERS[filterKey];
+
+      if (!currentValue) continue;
+
+      let isActive = false;
+      if (Array.isArray(currentValue)) {
+        isActive = currentValue.length > 0;
+      } else if (
+        typeof currentValue === 'object' &&
+        currentValue !== null &&
+        'min' in currentValue
+      ) {
+        const def = defaultValue as any;
+        isActive = def && (currentValue.min !== def.min || currentValue.max !== def.max);
+      } else {
+        isActive = currentValue !== defaultValue;
+      }
+
+      if (isActive) {
+        activeFiltersList.push({
+          key: filterKey,
+          value: currentValue,
+          label: formatValue(filterKey, currentValue),
+        });
+      }
+    }
+    return activeFiltersList;
+  }, [filters]);
+
   const applyFilters = useCallback(
     (vehicles: Vehicle[]) => {
       return vehicles.filter((vehicle) => {
+        // Text Search Filter
+        if (filters.search) {
+          const searchLower = filters.search.toLowerCase();
+          const matchesSearch =
+            vehicle.make.name.toLowerCase().includes(searchLower) ||
+            vehicle.model.name.toLowerCase().includes(searchLower) ||
+            vehicle.trim.name.toLowerCase().includes(searchLower);
+
+          if (!matchesSearch) return false;
+        }
+
         // Vehicle Type Filter
         if (
           filters.vehicleTypes.length > 0 &&
@@ -89,10 +147,19 @@ export function useVehicleFilters(initialFilters?: Partial<VehicleFilters>) {
     [filters]
   );
 
+  const removeFilter = useCallback((key: keyof VehicleFilters) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: DEFAULT_FILTERS[key],
+    }));
+  }, []);
+
   return {
     filters,
     updateFilter,
     resetFilters,
     applyFilters,
+    getActiveFilters,
+    removeFilter,
   };
 }
