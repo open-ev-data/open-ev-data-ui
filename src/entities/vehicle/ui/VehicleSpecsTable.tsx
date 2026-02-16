@@ -16,10 +16,12 @@ export function VehicleSpecsTable({
   variant = 'default',
   className,
 }: VehicleSpecsTableProps) {
+  const isCompact = variant === 'compact';
+
   return (
-    <div className={cn(styles.container, variant === 'compact' && styles.compact, className)}>
-      {/* Price - Only show if visible config allows and data exists */}
-      {isFieldVisible('pricing') && (
+    <div className={cn(styles.container, isCompact && styles.compact, className)}>
+      {/* Price - Hide in compact card view as per reference */}
+      {!isCompact && isFieldVisible('pricing') && (
         <DataField
           value={vehicle.pricing?.msrp?.[0]}
           render={(msrp) => (
@@ -37,13 +39,13 @@ export function VehicleSpecsTable({
         />
       )}
 
-      {/* Range (WLTP/EPA) - Always shown if data exists */}
+      {/* Range (WLTP/EPA) */}
       <DataField
         value={vehicle.range?.rated}
         render={() => (
           <div className={styles.item}>
             <span className={styles.value}>{getVehicleRange(vehicle).split(' ')[0]}</span>
-            <span className={styles.label}>Km Range</span>
+            <span className={styles.label}>{isCompact ? 'WLTP km' : 'Km Range'}</span>
           </div>
         )}
       />
@@ -54,7 +56,7 @@ export function VehicleSpecsTable({
         render={(kwh) => (
           <div className={styles.item}>
             <span className={styles.value}>{Math.round(kwh)}</span>
-            <span className={styles.label}>kWh Battery</span>
+            <span className={styles.label}>{isCompact ? 'Battery' : 'kWh Battery'}</span>
           </div>
         )}
       />
@@ -65,7 +67,7 @@ export function VehicleSpecsTable({
         render={(accel) => (
           <div className={styles.item}>
             <span className={styles.value}>{accel}s</span>
-            <span className={styles.label}>0-100 km/h</span>
+            <span className={styles.label}>{isCompact ? '0-100 km/h' : '0-100 km/h'}</span>
           </div>
         )}
       />

@@ -99,10 +99,10 @@
 }
 
 .content {
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-3) var(--space-3); /* Tighter horizontal padding */
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4); /* Better spacing between name, specs, and button */
   flex-grow: 1;
 }
 
@@ -110,12 +110,17 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  margin-bottom: var(--space-2);
+  min-height: 3.6rem; /* Slightly more space for larger title */
 }
 
 .typeBadge {
   align-self: flex-start;
-  margin-top: var(--space-1);
+  font-size: 10px;
+  padding: 1px 6px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .titleLink {
@@ -129,10 +134,15 @@
 }
 
 .title {
-  font-size: var(--text-lg);
+  font-size: 1.15rem; /* Noticeably larger but still fits 2 lines */
   font-weight: var(--weight-bold);
-  color: inherit;
+  color: var(--text-primary);
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.25;
 }
 
 .subtitle {
