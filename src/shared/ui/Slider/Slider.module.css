@@ -27,8 +27,8 @@
   height: 4px;
   background: linear-gradient(
     to right,
-    var(--color-secondary) 0%,
-    var(--color-secondary) var(--progress),
+    #00d2ff 0%,
+    #3aed9c var(--progress),
     hsla(210, 20%, 30%, 0.4) var(--progress),
     hsla(210, 20%, 30%, 0.4) 100%
   );
@@ -41,8 +41,8 @@
   height: 4px;
   background: linear-gradient(
     to right,
-    var(--color-secondary) 0%,
-    var(--color-secondary) var(--progress),
+    #00d2ff 0%,
+    #3aed9c var(--progress),
     hsla(210, 20%, 30%, 0.4) var(--progress),
     hsla(210, 20%, 30%, 0.4) 100%
   );
