@@ -12,7 +12,9 @@ Implement generic, reusable UI components (`shared/ui/*`) following the Design S
 
 ### 1. Shared Libraries (`src/shared/lib`)
 - [ ] Create `src/shared/lib/cn.ts` (Classname utility, e.g. `clsx` + `tailwind-merge` if using Tailwind, but here we use CSS Modules + `clsx` helper)
-- [ ] Create `src/shared/lib/data-presence.ts` (Implement `hasData` and `DataField` component for strict null checking)
+- [ ] Create `src/shared/lib/data-presence.ts` (Implement `hasData` and `DataField` component)
+  - **IMPORTANT**: Update `DataField` to check `isFieldVisible(path)` from config before rendering.
+  - If field is in `HIDDEN_FIELDS`, render `null` regardless of data presence.
 - [ ] Create `src/shared/lib/format.ts` (Formatters: currency, distance, power, generic number)
 
 ### 2. Base Components (`src/shared/ui`)

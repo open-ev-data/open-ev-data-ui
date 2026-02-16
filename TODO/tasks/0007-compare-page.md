@@ -13,6 +13,8 @@ Implement the standalone comparison page allowing side-by-side analysis of up to
 - [ ] **ComparePage layout**:
   - Handle URL query params or global state for selected vehicles
   - Grid layout for 2 or 3 columns
+  - **SEO**: Dynamic Title "Compare V1 vs V2" & Meta Description
+  - **Link Sharing**: Generate unique URL for the comparison set
 
 ### 2. Comparison Logic
 - [ ] **CompareTable**:

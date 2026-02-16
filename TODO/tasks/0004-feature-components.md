@@ -29,6 +29,8 @@ Implement complex domain-aware components (`features/*` and `entities/*`) connec
 - [ ] **FilterPanel** Logic:
   - State management (`useVehicleFilters` hook)
   - Sections: Range Slider, Battery Slider, Charging Slider, 0-100 Slider
+    - **Logic**: Each section must check `isFieldVisible()` before rendering.
+  - Checkboxes: Market Availability, Variance, Vehicle Type, Drivetrain
   - Checkboxes: Market Availability, Variance, Vehicle Type, Drivetrain
 - [ ] **FilterPanel** UI:
   - Desktop: Sticky Sidebar

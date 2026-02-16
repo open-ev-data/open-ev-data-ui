@@ -9,7 +9,14 @@ Implement the data fetching layer using TanStack Query to retrieve vehicle data 
 
 ## Implementation Steps
 
-### 1. Domain Models (`src/entities/vehicle/model`)
+### 1. Configuration (`src/shared/config`)
+- [ ] Create `env.ts`: Typed environment variables (API URLs, Feature flags)
+- [ ] Create `constants.ts`: Application constants (Pagination limits, default fallbacks)
+- [ ] Create `field-visibility.ts`: **Field Omission Logic**
+  - Define `HIDDEN_FIELDS` array (e.g. `['pricing', 'range.real_world']`)
+  - Export `isFieldVisible(path)` utility function
+
+### 2. Domain Models (`src/entities/vehicle/model`)
 - [ ] Create `vehicle.types.ts`: Define strict TypeScript interfaces matching `schema.json`
   - `Vehicle` (Root interface)
   - `VehicleType` (Enum)
