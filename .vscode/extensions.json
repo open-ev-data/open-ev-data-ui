@@ -12,6 +12,8 @@
     "ms-playwright.playwright",
     "vitest.explorer",
     "pkief.material-icon-theme",
-    "beardedbear.beardedtheme"
+    "beardedbear.beardedtheme",
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-mermaid"
   ]
 }
