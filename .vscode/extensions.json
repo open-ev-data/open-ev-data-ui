@@ -2,7 +2,7 @@
     "recommendations": [
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss",
+        "csstools.postcss",
         "dsznajder.es7-react-js-snippets",
         "usernamehw.errorlens",
         "streetsidesoftware.code-spell-checker",
@@ -10,10 +10,11 @@
         "EditorConfig.EditorConfig",
         "stylelint.vscode-stylelint",
         "ms-playwright.playwright",
-        "unifiedjs.vscode-mdx"
+        "vitest.explorer"
     ],
     "unwantedRecommendations": [
         "hookyqr.beautify",
-        "octref.vetur"
+        "octref.vetur",
+        "bradlc.vscode-tailwindcss"
     ]
 }
