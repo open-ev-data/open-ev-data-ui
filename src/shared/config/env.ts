@@ -9,7 +9,14 @@ export const ENV = {
   REPO_NAME: 'open-ev-data-dataset',
 } as const;
 
+// Use proxy in development to avoid CORS issues
+const isDev = import.meta.env.DEV;
+
 export const API_ENDPOINTS = {
-  LATEST_RELEASE: `${ENV.GITHUB_API_URL}/repos/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/latest`,
-  DOWNLOAD_BASE: `${ENV.GITHUB_RAW_URL}/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/download`,
+  LATEST_RELEASE: isDev
+    ? `/api/github/repos/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/latest`
+    : `${ENV.GITHUB_API_URL}/repos/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/latest`,
+  DOWNLOAD_BASE: isDev
+    ? `/proxy-github-release/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/download`
+    : `${ENV.GITHUB_RAW_URL}/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/download`,
 } as const;

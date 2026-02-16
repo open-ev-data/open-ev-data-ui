@@ -3,8 +3,14 @@ import { lazy, Suspense } from 'react';
 import { AppLayout } from './layouts';
 import { PageLoader } from '@/shared/ui/PageLoader/PageLoader';
 
-const HomePage = lazy(() =>
-  import('@/pages/home').then((module) => ({ default: module.HomePage }))
+const HomePage = lazy(() => import('@/pages/home').then((m) => ({ default: m.HomePage })));
+
+const VehicleDetailPage = lazy(() =>
+  import('@/pages/vehicle-detail').then((m) => ({ default: m.VehicleDetailPage }))
+);
+
+const NotFoundPage = lazy(() =>
+  import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage }))
 );
 
 export const router = createBrowserRouter([
@@ -20,7 +26,22 @@ export const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      // Add more routes here later
+      {
+        path: 'vehicle/:code',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <VehicleDetailPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: '*',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <NotFoundPage />
+          </Suspense>
+        ),
+      },
     ],
   },
 ]);

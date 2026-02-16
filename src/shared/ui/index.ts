@@ -11,4 +11,5 @@ export * from './Pagination/Pagination';
 export * from './Modal/Modal';
 export * from './Drawer/Drawer';
 export * from './ErrorFallback/ErrorFallback';
+export * from './Charts';
 export * from './PageLoader/PageLoader';

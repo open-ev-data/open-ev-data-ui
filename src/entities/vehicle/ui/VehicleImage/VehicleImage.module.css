@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--bg-surface-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  filter: brightness(0.9) contrast(1.1) saturate(0.8);
+  opacity: var(--opacity-image);
+  transition: var(--transition-transform);
+}
+
+.image:hover {
+  transform: scale(1.05);
+}
+
+.placeholder {
+  width: 100%;
+  height: 200px;
+  background-color: var(--bg-surface-2);
+  border-radius: var(--radius-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  border: 1px dashed var(--border-subtle);
+}

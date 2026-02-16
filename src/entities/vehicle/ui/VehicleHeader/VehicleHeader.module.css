@@ -1,0 +1,52 @@
+.header {
+  margin-bottom: var(--space-6);
+}
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.trim {
+  font-weight: var(--weight-normal);
+  color: var(--text-secondary);
+}
+
+.badges {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.yearBadge,
+.typeBadge {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+}
+
+.yearBadge {
+  background-color: var(--color-primary-muted);
+  color: var(--text-accent);
+}
+
+.typeBadge {
+  background-color: var(--bg-surface-3);
+  color: var(--text-secondary);
+}
+
+.variant {
+  margin-top: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+}
