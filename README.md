@@ -22,6 +22,9 @@ The main documentation for this repository can be found at:
 - [Responsive Strategy](docs/RESPONSIVE_STRATEGY.md) — Breakpoints, viewport adaptations, touch behavior
 - [Page Layouts](docs/PAGE_LAYOUTS.md) — Page-level structure and component composition
 
+### SEO & Optimization
+- [SEO Strategy](docs/SEO_STRATEGY.md) — Search engine optimization, discoverability, social media previews
+
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for more details.
