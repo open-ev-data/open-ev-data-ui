@@ -1,30 +1,73 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/open-ev-data/.github/bd1f96d4c236e7c1dc43a33535fc9f065f9b152e/assets/open-ev-data-logo.svg" alt="OpenEV Data Logo" width="200" />
-</div>
+# React + TypeScript + Vite
 
-# Open EV Data User Interface
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-> A simple web interface for searching and analyzing electric vehicle data from the Open EV Data project.
+Currently, two official plugins are available:
 
-The application is a React-based single-page application (SPA) hosted on GitHub Pages. When loaded, it fetches the latest vehicle data from the [Dataset repository](https://github.com/open-ev-data/open-ev-data-dataset) releases, stores it in browser memory, and provides fast querying and enhanced visualizations for the user.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Documentation
+## React Compiler
 
-The main documentation for this repository can be found at:
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### Technical Architecture
-- [Architecture](docs/ARCHITECTURE.md) — Technical architecture, FSD layers, data flow, state management
-- [Getting Started](docs/GET_STARTED.md) — Setup instructions and development workflow
+## Expanding the ESLint configuration
 
-### Visual Design System
-- [Design System](docs/DESIGN_SYSTEM.md) — Color palette, typography, spacing, design tokens
-- [UI Components](docs/UI_COMPONENTS.md) — Component specs, variants, states, data-driven rendering
-- [Responsive Strategy](docs/RESPONSIVE_STRATEGY.md) — Breakpoints, viewport adaptations, touch behavior
-- [Page Layouts](docs/PAGE_LAYOUTS.md) — Page-level structure and component composition
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### SEO & Optimization
-- [SEO Strategy](docs/SEO_STRATEGY.md) — Search engine optimization, discoverability, social media previews
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-## License
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for more details.
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```

@@ -1,0 +1,6 @@
+services:
+  ui:
+    image: ghcr.io/open-ev-data/open-ev-data-ui:latest
+    ports:
+      - "8080:80"
+    restart: always
