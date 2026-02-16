@@ -4,7 +4,7 @@ import { useVehicles } from '@/entities/vehicle';
 import { useVehicleFilters, FilterPanel } from '@/features/vehicle-filter';
 import { useComparison, ComparisonOverlay } from '@/features/vehicle-compare';
 import { VehicleGrid } from '@/widgets/VehicleGrid';
-import { SEO } from '@/shared/ui/SEO';
+import { useSEO, generateWebSiteSchema, generateOrganizationSchema } from '@/shared/seo';
 import { Button } from '@/shared/ui/Button/Button';
 import { cn } from '@/shared/lib/cn';
 import styles from './Page.module.css';
@@ -29,28 +29,17 @@ export function HomePage() {
     setIsCompareOpen(true);
   };
 
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Open EV Data Explorer',
-    url: window.location.href,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${window.location.origin}/?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
-  };
+  const seo = useSEO({
+    title: 'OpenEV Data Explorer - Electric Vehicle Database & Specs',
+    description:
+      'Search, compare, and analyze 400+ electric vehicles. Complete technical specs, charging curves, real-world range data.',
+    canonical: '/',
+    schema: [generateWebSiteSchema(), generateOrganizationSchema()],
+  });
 
   return (
     <div className={styles.container}>
-      <SEO
-        title="Home"
-        description="Explore the comprehensive database of electric vehicles."
-        structuredData={schema}
-      />
+      {seo}
       {/* Sidebar - Filters */}
       <aside className={cn(styles.sidebar, !isMobileFiltersOpen && 'hidden lg:block')}>
         {/* Mobile Toggle would replace logic here for MVP */}

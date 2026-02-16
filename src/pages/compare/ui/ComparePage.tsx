@@ -100,6 +100,10 @@ export const ComparePage = () => {
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
+        <link
+          rel="canonical"
+          href={`https://open-ev-data.github.io/open-ev-data-ui/compare?vehicles=${vehicleCodes.join(',')}`}
+        />
 
         {/* Open Graph */}
         <meta property="og:title" content={title} />

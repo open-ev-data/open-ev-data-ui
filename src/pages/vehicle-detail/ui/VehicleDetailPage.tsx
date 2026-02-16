@@ -1,5 +1,5 @@
 import { useParams, Navigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { useState } from 'react';
 import { useVehicle } from '@/entities/vehicle/api/use-vehicle';
 import { PageLoader } from '@/shared/ui/PageLoader/PageLoader';
 import { ErrorFallback } from '@/shared/ui/ErrorFallback/ErrorFallback';
@@ -12,41 +12,45 @@ import { FullSpecs } from '@/entities/vehicle/ui/FullSpecs/FullSpecs';
 import { Tabs } from '@/shared/ui/Tabs/Tabs';
 import { LineChart, BarChart } from '@/shared/ui/Charts';
 import { hasData } from '@/shared/lib/data-presence';
+import { useSEO, generateProductSchema, generateBreadcrumbSchema } from '@/shared/seo';
 import styles from './VehicleDetailPage.module.css';
-import { useState } from 'react';
 
 export const VehicleDetailPage = () => {
   const { code } = useParams<{ code: string }>();
   const { vehicle, isLoading, error } = useVehicle(code);
   const [activeTab, setActiveTab] = useState('overview');
 
+  // SEO Data (prepare conditionally)
+  const title = vehicle
+    ? `${vehicle.make.name} ${vehicle.model.name} ${vehicle.year} - Full Specs`
+    : 'Vehicle Details';
+  const rangeKm = vehicle?.range?.rated?.[0]?.range_km;
+  const batterykWh = vehicle?.battery?.pack_capacity_kwh_net;
+  const description = vehicle
+    ? `Complete technical specs for ${vehicle.make.name} ${vehicle.model.name} ${vehicle.year}.${rangeKm ? ` Range: ${rangeKm}km.` : ''}${batterykWh ? ` Battery: ${batterykWh}kWh.` : ''} Charging curves, dimensions, performance data.`
+    : '';
+
+  const breadcrumbs = vehicle
+    ? generateBreadcrumbSchema([
+        { name: 'Home', url: '/' },
+        { name: vehicle.make.name, url: `/?make=${vehicle.make.slug}` },
+        { name: `${vehicle.model.name} ${vehicle.year}`, url: `/vehicle/${vehicle.unique_code}` },
+      ])
+    : null;
+
+  // Call useSEO unconditionally at top level before any early returns
+  const seo = useSEO({
+    title,
+    description,
+    canonical: vehicle ? `/vehicle/${vehicle.unique_code}` : undefined,
+    image: vehicle?.images?.exterior_url,
+    type: 'product',
+    schema: vehicle ? [generateProductSchema(vehicle), breadcrumbs].filter(Boolean) : undefined,
+  });
+
   if (isLoading) return <PageLoader />;
   if (error) return <ErrorFallback />;
   if (!vehicle) return <Navigate to="/404" replace />;
-
-  // SEO Data
-  const title = `${vehicle.make.name} ${vehicle.model.name} ${vehicle.year} - Full Specs | OpenEV Data`;
-  const description = `Complete technical specs for ${vehicle.make.name} ${vehicle.model.name} ${vehicle.year}. Range: ${vehicle.range?.rated?.[0]?.range_km}km, Battery: ${vehicle.battery?.pack_capacity_kwh_net}kWh.`;
-  const imageUrl = vehicle.images?.exterior_url;
-
-  const productSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: `${vehicle.make.name} ${vehicle.model.name}`,
-    brand: {
-      '@type': 'Brand',
-      name: vehicle.make.name,
-    },
-    model: vehicle.model.name,
-    image: imageUrl,
-    description: description,
-    offers: {
-      '@type': 'Offer',
-      price: vehicle.pricing?.msrp?.[0]?.amount,
-      priceCurrency: vehicle.pricing?.msrp?.[0]?.currency,
-      availability: 'https://schema.org/InStock',
-    },
-  };
 
   // Prepare Chart Data
   const chargingCurveData =
@@ -70,14 +74,7 @@ export const VehicleDetailPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        {imageUrl && <meta property="og:image" content={imageUrl} />}
-        <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
-      </Helmet>
+      {seo}
 
       <div className={styles.container}>
         <div className={styles.sidebar}>
