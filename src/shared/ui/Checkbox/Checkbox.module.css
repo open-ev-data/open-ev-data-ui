@@ -1,0 +1,57 @@
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.label.disabled {
+  cursor: not-allowed;
+  opacity: var(--state-disabled-opacity);
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  transition: var(--transition-colors);
+  color: transparent;
+}
+
+.input:focus-visible + .box {
+  box-shadow: 0 0 0 2px var(--state-focus-ring);
+  border-color: var(--border-primary);
+}
+
+.input:checked + .box,
+.input:indeterminate + .box {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--text-on-cta);
+}
+
+/* If using primary background for checks, usually text-on-cta (white/black) is better than primary color */
+.input:checked + .box svg,
+.input:indeterminate + .box svg {
+  color: var(--text-on-cta); /* Or bg-base if explicitly requested in spec */
+}
+
+.label:hover:not(.disabled) .box {
+  border-color: var(--border-primary);
+}
