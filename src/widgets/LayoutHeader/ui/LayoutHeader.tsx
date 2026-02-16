@@ -10,7 +10,8 @@ export function LayoutHeader({ className }: { className?: string }) {
     <header className={cn(styles.header, className)}>
       <Link to="/" className={styles.logo}>
         <img src={logoMini} alt="OpenEV Data" className={styles.icon} />
-        <span>OpenEV Data</span>
+        <span className={styles.brandName}>OpenEV</span>
+        <span className={styles.brandSuffix}>Data Explorer</span>
       </Link>
 
       <div className={styles.searchContainer}>

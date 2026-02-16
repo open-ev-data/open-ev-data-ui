@@ -16,13 +16,31 @@
 
 .logo {
   font-size: var(--text-lg);
-  font-weight: var(--weight-bold);
-  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: var(--space-2);
   text-decoration: none;
   flex-shrink: 0;
+}
+
+.brandName {
+  font-weight: 800;
+  background: linear-gradient(
+    to right,
+    #00d2ff 0%,
+    /* Modern Cyan */ #3aed9c 100% /* Neon Green */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.8px;
+}
+
+.brandSuffix {
+  font-weight: 400;
+  color: var(--text-secondary);
+  opacity: 0.8;
+  margin-left: -2px; /* Tighter spacing */
 }
 
 .icon {
