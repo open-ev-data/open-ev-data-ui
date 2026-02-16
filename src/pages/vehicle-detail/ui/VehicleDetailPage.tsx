@@ -1,4 +1,4 @@
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useVehicle } from '@/entities/vehicle/api/use-vehicle';
 import { PageLoader } from '@/shared/ui/PageLoader/PageLoader';
@@ -10,6 +10,7 @@ import { HighlightsList } from '@/entities/vehicle/ui/HighlightsList/HighlightsL
 import { ChargingOverviewTable } from '@/entities/vehicle/ui/ChargingOverviewTable/ChargingOverviewTable';
 import { FullSpecs } from '@/entities/vehicle/ui/FullSpecs/FullSpecs';
 import { Tabs } from '@/shared/ui/Tabs/Tabs';
+import { Button } from '@/shared/ui/Button/Button';
 import { LineChart, BarChart } from '@/shared/ui/Charts';
 import { hasData } from '@/shared/lib/data-presence';
 import { useSEO, generateProductSchema, generateBreadcrumbSchema } from '@/shared/seo';
@@ -17,6 +18,7 @@ import styles from './VehicleDetailPage.module.css';
 
 export const VehicleDetailPage = () => {
   const { code } = useParams<{ code: string }>();
+  const navigate = useNavigate();
   const { vehicle, isLoading, error } = useVehicle(code);
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -34,7 +36,7 @@ export const VehicleDetailPage = () => {
     ? generateBreadcrumbSchema([
         { name: 'Home', url: '/' },
         { name: vehicle.make.name, url: `/?make=${vehicle.make.slug}` },
-        { name: `${vehicle.model.name} ${vehicle.year}`, url: `/vehicle/${vehicle.unique_code}` },
+        { name: `${vehicle.model.name} ${vehicle.year}`, url: `/vehicles/${vehicle.unique_code}` },
       ])
     : null;
 
@@ -42,7 +44,7 @@ export const VehicleDetailPage = () => {
   const seo = useSEO({
     title,
     description,
-    canonical: vehicle ? `/vehicle/${vehicle.unique_code}` : undefined,
+    canonical: vehicle ? `/vehicles/${vehicle.unique_code}` : undefined,
     image: vehicle?.images?.exterior_url,
     type: 'product',
     schema: vehicle ? [generateProductSchema(vehicle), breadcrumbs].filter(Boolean) : undefined,
@@ -85,6 +87,16 @@ export const VehicleDetailPage = () => {
         </div>
 
         <div className={styles.main}>
+          <div className={styles.topActions}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(-1)}
+              className={styles.backButton}
+            >
+              <span className={styles.backIcon}>←</span> Back to Catalog
+            </Button>
+          </div>
           <VehicleHeader vehicle={vehicle} />
           <SpecsPills vehicle={vehicle} />
 

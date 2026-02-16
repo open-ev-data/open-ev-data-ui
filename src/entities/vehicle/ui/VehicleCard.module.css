@@ -118,10 +118,20 @@
   margin-top: var(--space-1);
 }
 
+.titleLink {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.titleLink:hover {
+  color: var(--color-primary-light);
+}
+
 .title {
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
-  color: var(--text-primary);
+  color: inherit;
   margin: 0;
 }
 

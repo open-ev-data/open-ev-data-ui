@@ -44,7 +44,31 @@
 .main {
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Prevents flex item from overflowing */
+  min-width: 0;
+}
+
+.topActions {
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+}
+
+.backButton {
+  padding-left: 0;
+  color: var(--text-secondary);
+  font-weight: var(--weight-medium);
+  gap: var(--space-2);
+}
+
+.backButton:hover {
+  color: var(--color-primary-light);
+  background: transparent;
+}
+
+.backIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin-right: var(--space-1);
 }
 
 .tabs {

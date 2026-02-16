@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Vehicle } from '../model/vehicle.types';
 import { getVehicleImage, getVehicleTitle } from '../model/vehicle.helpers';
 import { Card } from '@/shared/ui/Card/Card';
@@ -17,17 +18,20 @@ interface VehicleCardProps {
 export function VehicleCard({ vehicle, variant = 'grid', onCompare, className }: VehicleCardProps) {
   const title = getVehicleTitle(vehicle);
   const imageUrl = getVehicleImage(vehicle);
+  const detailHref = `/vehicles/${vehicle.unique_code}`;
 
   return (
     <Card className={cn(styles.card, variant === 'list' ? styles.list : styles.grid, className)}>
-      <div className={styles.imageContainer}>
+      <Link to={detailHref} className={styles.imageContainer}>
         <img src={imageUrl} alt={title} className={styles.image} loading="lazy" />
         {/* Absolute positioned badges could go here (e.g. New, Sale) */}
-      </div>
+      </Link>
 
       <div className={styles.content}>
         <div className={styles.titleGroup}>
-          <h3 className={styles.title}>{title}</h3>
+          <Link to={detailHref} className={styles.titleLink}>
+            <h3 className={styles.title}>{title}</h3>
+          </Link>
           <Badge variant="neutral" className={styles.typeBadge}>
             {vehicle.vehicle_type.replace('_', ' ')}
           </Badge>

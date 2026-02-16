@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'vehicle/:code',
+        path: 'vehicles/:code',
         element: (
           <Suspense fallback={<PageLoader />}>
             <VehicleDetailPage />
