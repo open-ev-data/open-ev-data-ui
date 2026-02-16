@@ -13,6 +13,10 @@
   }
 }
 
+.sidebar {
+  /* Shown by default on desktop */
+}
+
 /* Mobile: Single Column */
 @media (max-width: 1023px) {
   .container {
@@ -21,8 +25,16 @@
   }
 
   .sidebar {
-    /* Mobile styles for filter handling (e.g., hidden or top bar) */
     margin-bottom: var(--space-4);
+  }
+
+  /* Hide sidebar by default on mobile */
+  .sidebarHidden {
+    display: none;
+  }
+
+  .filterPanelMobile {
+    width: 100%;
   }
 }
 
@@ -52,7 +64,13 @@
   margin-left: var(--space-2);
 }
 
-/* Toggle filters button for mobile could go here */
+.headerActions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Hide mobile filter toggle on desktop */
 .mobileFilterToggle {
   display: none;
 }
@@ -61,6 +79,4 @@
   .mobileFilterToggle {
     display: inline-flex;
   }
-
-  /* Hide sidebar by default on mobile unless toggled - for MVP we might show it or use details/summary */
 }

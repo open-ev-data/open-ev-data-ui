@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { useVehicleSearch } from '../model/use-vehicle-search';
 import { Spinner } from '@/shared/ui/Spinner/Spinner';
-import { getVehicleImage } from '@/entities/vehicle';
+import { getVehicleImage, getVehicleTitle } from '@/entities/vehicle';
 import { cn } from '@/shared/lib/cn';
 import styles from './SearchBar.module.css';
 
@@ -70,10 +70,7 @@ export function SearchBar({ className }: { className?: string }) {
                   loading="lazy"
                 />
                 <div className={styles.info}>
-                  <span className={styles.name}>
-                    {vehicle.make.name} {vehicle.model.name} {vehicle.trim.name}
-                  </span>
-                  <span className={styles.year}>{vehicle.year}</span>
+                  <span className={styles.name}>{getVehicleTitle(vehicle)}</span>
                 </div>
               </button>
             ))

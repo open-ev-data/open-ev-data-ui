@@ -67,16 +67,16 @@
   flex-grow: 1;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
 .titleGroup {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.typeBadge {
+  align-self: flex-start;
+  margin-top: var(--space-1);
 }
 
 .title {

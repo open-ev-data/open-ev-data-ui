@@ -1,7 +1,7 @@
 import { X, Trash2 } from 'lucide-react';
 import { useComparison } from '../model/use-comparison';
 import { Button } from '@/shared/ui/Button/Button';
-import { getVehicleImage } from '@/entities/vehicle';
+import { getVehicleImage, getVehicleTitle } from '@/entities/vehicle';
 import { cn } from '@/shared/lib/cn';
 import styles from './ComparisonOverlay.module.css';
 
@@ -39,12 +39,7 @@ export function ComparisonOverlay({ isOpen, onClose, className }: ComparisonOver
                   className={styles.thumb}
                 />
                 <div className={styles.info}>
-                  <span className={styles.name}>
-                    {vehicle.make.name} {vehicle.model.name}
-                  </span>
-                  <span className={styles.price}>
-                    {vehicle.year} • {vehicle.trim.name}
-                  </span>
+                  <span className={styles.name}>{getVehicleTitle(vehicle)}</span>
                 </div>
                 <Button
                   variant="ghost"

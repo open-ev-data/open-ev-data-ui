@@ -1,5 +1,5 @@
 import type { Vehicle } from '../model/vehicle.types';
-import { getVehicleImage } from '../model/vehicle.helpers';
+import { getVehicleImage, getVehicleTitle } from '../model/vehicle.helpers';
 import { Card } from '@/shared/ui/Card/Card';
 import { Badge } from '@/shared/ui/Badge/Badge';
 import { Button } from '@/shared/ui/Button/Button';
@@ -15,10 +15,7 @@ interface VehicleCardProps {
 }
 
 export function VehicleCard({ vehicle, variant = 'grid', onCompare, className }: VehicleCardProps) {
-  const title = `${vehicle.make.name} ${vehicle.model.name}`;
-  const subtitle = `${vehicle.year} ${vehicle.trim.name} ${
-    vehicle.variant?.name ? `(${vehicle.variant.name})` : ''
-  }`;
+  const title = getVehicleTitle(vehicle);
   const imageUrl = getVehicleImage(vehicle);
 
   return (
@@ -29,12 +26,11 @@ export function VehicleCard({ vehicle, variant = 'grid', onCompare, className }:
       </div>
 
       <div className={styles.content}>
-        <div className={styles.header}>
-          <div className={styles.titleGroup}>
-            <h3 className={styles.title}>{title}</h3>
-            <span className={styles.subtitle}>{subtitle}</span>
-          </div>
-          <Badge variant="neutral">{vehicle.vehicle_type.replace('_', ' ')}</Badge>
+        <div className={styles.titleGroup}>
+          <h3 className={styles.title}>{title}</h3>
+          <Badge variant="neutral" className={styles.typeBadge}>
+            {vehicle.vehicle_type.replace('_', ' ')}
+          </Badge>
         </div>
 
         {/* Specs Table - Compact in card */}

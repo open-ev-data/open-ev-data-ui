@@ -41,12 +41,12 @@ export function HomePage() {
     <div className={styles.container}>
       {seo}
       {/* Sidebar - Filters */}
-      <aside className={cn(styles.sidebar, !isMobileFiltersOpen && 'hidden lg:block')}>
+      <aside className={cn(styles.sidebar, !isMobileFiltersOpen && styles.sidebarHidden)}>
         {/* Mobile Toggle would replace logic here for MVP */}
         <FilterPanel
           filters={filters}
           updateFilter={updateFilter}
-          className={cn(isMobileFiltersOpen ? 'w-full' : '')}
+          className={cn(isMobileFiltersOpen ? styles.filterPanelMobile : '')}
         />
       </aside>
 
@@ -58,11 +58,11 @@ export function HomePage() {
             {!isLoading && <span className={styles.count}>({filteredVehicles.length})</span>}
           </h1>
 
-          <div className="flex gap-2">
+          <div className={styles.headerActions}>
             <Button
               variant="secondary"
               size="sm"
-              className="lg:hidden"
+              className={styles.mobileFilterToggle}
               onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
             >
               {isMobileFiltersOpen ? 'Hide Filters' : 'Filters'}

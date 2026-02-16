@@ -1,4 +1,6 @@
 import type { Vehicle } from '../../model/vehicle.types';
+import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
+import { getVehicleTitle } from '../../model/vehicle.helpers';
 import styles from './VehicleImage.module.css';
 
 interface VehicleImageProps {
@@ -6,16 +8,9 @@ interface VehicleImageProps {
 }
 
 export const VehicleImage = ({ vehicle }: VehicleImageProps) => {
-  const imageUrl = vehicle.images?.exterior_url;
-  const altText = `${vehicle.make.name} ${vehicle.model.name} ${vehicle.trim.name}`;
-
-  if (!imageUrl) {
-    return (
-      <div className={styles.placeholder}>
-        <span className={styles.placeholderText}>No Image Available</span>
-      </div>
-    );
-  }
+  // Use exterior_url if available, otherwise fallback to vehicle type image
+  const imageUrl = vehicle.images?.exterior_url || getVehicleTypeImage(vehicle.vehicle_type);
+  const altText = getVehicleTitle(vehicle);
 
   return (
     <div className={styles.container}>

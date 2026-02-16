@@ -2,30 +2,27 @@
  * Helper functions for vehicle domain entities.
  */
 import type { Vehicle } from './vehicle.types';
+import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
 
 /**
  * Generates a full display title for a vehicle.
- * Format: "Year Make Model Trim [Variant]"
+ * Format: "Make Model Variant Year"
  */
 export function getVehicleTitle(vehicle: Vehicle): string {
-  const parts = [vehicle.year, vehicle.make.name, vehicle.model.name, vehicle.trim.name];
-
-  if (vehicle.variant?.name) {
-    parts.push(`(${vehicle.variant.name})`);
-  }
-
+  const variantName = vehicle.variant?.name === 'Base' ? '' : vehicle.variant?.name;
+  const parts = [vehicle.make.name, vehicle.model.name, variantName, vehicle.year];
   return parts.filter(Boolean).join(' ');
 }
 
 /**
- * Resolves the vehicle image URL with a default fallback.
+ * Resolves the vehicle image URL with a type-based fallback.
  */
 export function getVehicleImage(vehicle: Vehicle): string {
   if (vehicle.images?.exterior_url) {
     return vehicle.images.exterior_url;
   }
-  // TODO: Add a specific placeholder asset
-  return '/placeholder-vehicle.png';
+  // Use vehicle type image as fallback
+  return getVehicleTypeImage(vehicle.vehicle_type);
 }
 
 /**
