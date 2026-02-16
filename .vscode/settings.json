@@ -5,9 +5,7 @@
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
   },
-  "editor.rulers": [
-    100
-  ],
+  "editor.rulers": [100],
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
@@ -37,10 +35,7 @@
     "typescript",
     "typescriptreact"
   ],
-  "stylelint.validate": [
-    "css",
-    "scss"
-  ],
+  "stylelint.validate": ["css", "scss"],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "javascript.preferences.importModuleSpecifier": "non-relative",
@@ -71,8 +66,5 @@
     "*.tsx": "${capture}.test.tsx, ${capture}.spec.tsx, ${capture}.module.css",
     "*.css": "${capture}.module.css",
     ".eslintrc*": ".eslintignore, .prettierrc*, .prettierignore, .editorconfig"
-  },
-  "files.associations": {
-    "*.css": "css"
   }
 }
