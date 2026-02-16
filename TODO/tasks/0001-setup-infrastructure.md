@@ -1,9 +1,11 @@
 # 0001 - Setup Infrastructure & Foundation
 
 ## Objective
+
 Initialize the project environment, set up the directory structure obeying FSD, configure global styles/design system implementation, and install core dependencies.
 
 ## Input Documentation
+
 - @[UI/README.md]
 - @[UI/docs/ARCHITECTURE.md] (Tech stack, FSD structure, naming conventions)
 - @[UI/docs/DESIGN_SYSTEM.md] (Design tokens, global styles, reset)
@@ -12,11 +14,12 @@ Initialize the project environment, set up the directory structure obeying FSD, 
 ## Implementation Steps
 
 ### 1. Project Initialization & Tooling
-- [ ] Initialize Vite + React + TypeScript project
-- [ ] Configure `vite.config.ts` with path aliases (`@/*` -> `src/*`)
-- [ ] Setup `eslint.config.js`, `.prettierrc`, `.editorconfig`
-- [ ] Setup `.releaserc.js` (Semantic Release config)
-- [ ] Install dependencies:
+
+- [x] Initialize Vite + React + TypeScript project
+- [x] Configure `vite.config.ts` with path aliases (`@/*` -> `src/*`)
+- [x] Setup `eslint.config.js`, `.prettierrc`, `.editorconfig`
+- [x] Setup `.releaserc.js` (Semantic Release config)
+- [x] Install dependencies:
   - `react-router-dom` (Router)
   - `@tanstack/react-query` (State management)
   - `lucide-react` (Icons)
@@ -28,13 +31,15 @@ Initialize the project environment, set up the directory structure obeying FSD, 
   - `vite-plugin-prerender` OR `vite-plugin-ssr` (Static prerendering)
 
 ### 2. DevOps & CI/CD
-- [ ] Create `.github/workflows/ci.yml` (Lint, Test, Build)
-- [ ] Create `.github/workflows/deploy.yml` (Deploy to GitHub Pages)
-- [ ] Create `public/404.html` (SPA Redirect script for GitHub Pages)
-- [ ] Create `public/robots.txt`
+
+- [x] Create `.github/workflows/ci.yml` (Lint, Test, Build)
+- [x] Create `.github/workflows/deploy.yml` (Deploy to GitHub Pages)
+- [x] Create `public/404.html` (SPA Redirect script for GitHub Pages)
+- [x] Create `public/robots.txt`
 
 ### 2. Directory Structure (FSD)
-- [ ] Create strict FSD layer structure:
+
+- [x] Create strict FSD layer structure:
   ```
   src/
   ├── app/          # Providers, App component, global styles
@@ -45,24 +50,27 @@ Initialize the project environment, set up the directory structure obeying FSD, 
   ```
 
 ### 3. Global Styles & Design Tokens
-- [ ] Create `src/shared/styles/reset.css` (Standard CSS reset)
-- [ ] Create `src/shared/styles/tokens.css` (Implement ALL CSS variables from DESIGN_SYSTEM.md)
+
+- [x] Create `src/shared/styles/reset.css` (Standard CSS reset)
+- [x] Create `src/shared/styles/tokens.css` (Implement ALL CSS variables from DESIGN_SYSTEM.md)
   - Colors (Core, Semantic, Surface, Border, Text, Charts)
   - Typography (Fonts, Scale, Weights)
   - Spacing & Radius
   - Shadows & Elevations
   - Animations & Transitions
   - Z-Index Scale
-- [ ] Create `src/shared/styles/global.css` (Typography defaults, body bg)
-- [ ] Create `src/shared/styles/breakpoints.css` (Media query reference)
-- [ ] Import logic in `src/app/App.module.css` or root
+- [x] Create `src/shared/styles/global.css` (Typography defaults, body bg)
+- [x] Create `src/shared/styles/breakpoints.css` (Media query reference)
+- [x] Import logic in `src/app/App.module.css` or root
 
 ### 4. Basic App Configuration
-- [ ] Implement `src/app/providers.tsx` (QueryClientProvider, RouterProvider placeholder)
-- [ ] Implement `src/app/router.tsx` (Basic definition with placeholder pages)
-- [ ] Implement `src/app/App.tsx` (Root component)
+
+- [x] Implement `src/app/providers.tsx` (QueryClientProvider, RouterProvider placeholder)
+- [x] Implement `src/app/router.tsx` (Basic definition with placeholder pages)
+- [x] Implement `src/app/App.tsx` (Root component)
 
 ## Verification
-- [ ] Run `npm run dev` and verify "Hello World" renders with correct background color (`--bg-base`)
-- [ ] Verify path aliases work (import from `@/shared/...`)
-- [ ] Verify Vitest runs successfully
+
+- [x] Run `npm run dev` and verify "Hello World" renders with correct background color (`--bg-base`)
+- [x] Verify path aliases work (import from `@/shared/...`)
+- [x] Verify Vitest runs successfully
