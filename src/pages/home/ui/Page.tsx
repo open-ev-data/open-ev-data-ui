@@ -11,7 +11,7 @@ import styles from './Page.module.css';
 
 export function HomePage() {
   const { data: vehicles, isLoading, error: queryError, refetch } = useVehicles();
-  const { filters, updateFilter, applyFilters } = useVehicleFilters();
+  const { filters, updateFilter, applyFilters, resetFilters } = useVehicleFilters();
   const { addToCompare, comparedVehicles } = useComparison();
 
   const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -46,6 +46,7 @@ export function HomePage() {
         <FilterPanel
           filters={filters}
           updateFilter={updateFilter}
+          resetFilters={resetFilters}
           className={cn(isMobileFiltersOpen ? styles.filterPanelMobile : '')}
         />
       </aside>
