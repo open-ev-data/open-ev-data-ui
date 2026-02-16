@@ -1,34 +1,26 @@
-import { createBrowserRouter } from "react-router-dom";
-import { App } from "./App";
+import { createBrowserRouter } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { AppLayout } from './layouts';
+import { PageLoader } from '@/shared/ui/PageLoader/PageLoader';
+
+const HomePage = lazy(() =>
+  import('@/pages/home').then((module) => ({ default: module.HomePage }))
+);
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: '/',
+    element: <AppLayout />,
     children: [
       {
         index: true,
         element: (
-          <div style={{ padding: "var(--space-8)" }}>
-            <h1
-              style={{
-                fontSize: "var(--text-4xl)",
-                color: "var(--text-primary)",
-              }}
-            >
-              Hello World
-            </h1>
-            <p
-              style={{
-                marginTop: "var(--space-4)",
-                color: "var(--text-secondary)",
-              }}
-            >
-              Open EV Data UI Infrastructure Setup Complete
-            </p>
-          </div>
+          <Suspense fallback={<PageLoader />}>
+            <HomePage />
+          </Suspense>
         ),
       },
+      // Add more routes here later
     ],
   },
 ]);

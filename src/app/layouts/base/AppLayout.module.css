@@ -1,0 +1,20 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-base);
+}
+
+.main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Add padding bottom on mobile to account for BottomNav */
+@media (max-width: 1024px) {
+  .main {
+    padding-bottom: 56px;
+  }
+}

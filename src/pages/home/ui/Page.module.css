@@ -1,0 +1,66 @@
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Desktop: Sidebar + Content */
+@media (min-width: 1024px) {
+  .container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-6);
+    padding: var(--space-6);
+  }
+}
+
+/* Mobile: Single Column */
+@media (max-width: 1023px) {
+  .container {
+    display: block;
+    padding: var(--space-4);
+  }
+
+  .sidebar {
+    /* Mobile styles for filter handling (e.g., hidden or top bar) */
+    margin-bottom: var(--space-4);
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-height: 50vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+}
+
+.count {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  margin-left: var(--space-2);
+}
+
+/* Toggle filters button for mobile could go here */
+.mobileFilterToggle {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .mobileFilterToggle {
+    display: inline-flex;
+  }
+
+  /* Hide sidebar by default on mobile unless toggled - for MVP we might show it or use details/summary */
+}
