@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { type ReactNode } from 'react';
+import { FilterProvider } from '@/features/vehicle-filter';
 
 import { APP_CONSTANTS } from '../shared/config/constants';
 
@@ -18,7 +19,9 @@ const queryClient = new QueryClient({
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <HelmetProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <FilterProvider>{children}</FilterProvider>
+      </QueryClientProvider>
     </HelmetProvider>
   );
 }

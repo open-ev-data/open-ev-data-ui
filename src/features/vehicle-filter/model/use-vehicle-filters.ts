@@ -1,13 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import type { Vehicle } from '@/entities/vehicle';
 import { DEFAULT_FILTERS } from './filter.types';
 import type { VehicleFilters } from './filter.types';
+import { useFilterContext } from './FilterContext';
 
-export function useVehicleFilters(initialFilters?: Partial<VehicleFilters>) {
-  const [filters, setFilters] = useState<VehicleFilters>({
-    ...DEFAULT_FILTERS,
-    ...initialFilters,
-  });
+export function useVehicleFilters() {
+  const { filters, setFilters } = useFilterContext();
 
   const updateFilter = useCallback(
     (key: keyof VehicleFilters, value: VehicleFilters[keyof VehicleFilters]) => {
@@ -16,12 +14,12 @@ export function useVehicleFilters(initialFilters?: Partial<VehicleFilters>) {
         [key]: value,
       }));
     },
-    []
+    [setFilters]
   );
 
   const resetFilters = useCallback(() => {
     setFilters(DEFAULT_FILTERS);
-  }, []);
+  }, [setFilters]);
 
   const getActiveFilters = useCallback(() => {
     const activeFiltersList: {
@@ -147,12 +145,15 @@ export function useVehicleFilters(initialFilters?: Partial<VehicleFilters>) {
     [filters]
   );
 
-  const removeFilter = useCallback((key: keyof VehicleFilters) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: DEFAULT_FILTERS[key],
-    }));
-  }, []);
+  const removeFilter = useCallback(
+    (key: keyof VehicleFilters) => {
+      setFilters((prev) => ({
+        ...prev,
+        [key]: DEFAULT_FILTERS[key],
+      }));
+    },
+    [setFilters]
+  );
 
   return {
     filters,
