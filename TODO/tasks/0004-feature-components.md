@@ -1,17 +1,20 @@
 # 0004 - Feature & Entity Components
 
 ## Objective
+
 Implement complex domain-aware components (`features/*` and `entities/*`) connecting UI logic with the data layer.
 
 ## Input Documentation
+
 - @[UI/docs/UI_COMPONENTS.md] (Anatomy, specs)
 - @[UI/docs/RESPONSIVE_STRATEGY.md] (Mobile/Desktop variants)
 
 ## Implementation Steps
 
 ### 1. Entity Components (`src/entities/vehicle/ui`)
-- [ ] **VehicleSpecsTable**: Key metrics display (Price, Range, Battery, 0-100)
-- [ ] **VehicleCard**:
+
+- [x] **VehicleSpecsTable**: Key metrics display (Price, Range, Battery, 0-100)
+- [x] **VehicleCard**:
   - Grid variant (Desktop): Vertical layout
   - List variant (Mobile): Horizontal layout
   - Image handling with fallback
@@ -19,30 +22,34 @@ Implement complex domain-aware components (`features/*` and `entities/*`) connec
   - "Compare" button integration
 
 ### 2. Feature: Search (`src/features/vehicle-search`)
-- [ ] **SearchBar**:
+
+- [x] **SearchBar**:
   - Input field with debounce
   - Dropdown logic for autocomplete results
   - Navigation on selection (`/vehicle/:code`)
   - Integration with `useVehicles()`
 
 ### 3. Feature: Filters (`src/features/vehicle-filter`)
-- [ ] **FilterPanel** Logic:
+
+- [x] **FilterPanel** Logic:
   - State management (`useVehicleFilters` hook)
   - Sections: Range Slider, Battery Slider, Charging Slider, 0-100 Slider
     - **Logic**: Each section must check `isFieldVisible()` before rendering.
   - Checkboxes: Market Availability, Variance, Vehicle Type, Drivetrain
   - Checkboxes: Market Availability, Variance, Vehicle Type, Drivetrain
-- [ ] **FilterPanel** UI:
+- [x] **FilterPanel** UI:
   - Desktop: Sticky Sidebar
   - Mobile: Accordion / Bottom Sheet (responsive adaptation)
 
 ### 4. Feature: Comparison Logic (`src/features/vehicle-compare`)
-- [ ] Create `useComparison` hook (Context or LocalStorage based)
+
+- [x] Create `useComparison` hook (Context or LocalStorage based)
   - `addToCompare(vehicle)`
   - `removeFromCompare(vehicle)`
   - `comparedVehicles` list (max 3)
 
 ## Verification
+
 - [ ] Verify Search finds vehicles and navigates
 - [ ] Verify FilterPanel updates filter state (console log state changes)
 - [ ] Verify VehicleCard renders correctly with real data
