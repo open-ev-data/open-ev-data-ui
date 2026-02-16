@@ -7,8 +7,8 @@
 @media (min-width: 1024px) {
   .container {
     display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: var(--space-6);
+    grid-template-columns: 280px 1fr;
+    gap: var(--space-8);
     padding: var(--space-6);
   }
 }

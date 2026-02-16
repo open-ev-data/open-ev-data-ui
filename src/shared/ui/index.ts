@@ -13,3 +13,4 @@ export * from './Drawer/Drawer';
 export * from './ErrorFallback/ErrorFallback';
 export * from './Charts';
 export * from './PageLoader/PageLoader';
+export * from './Accordion/Accordion';

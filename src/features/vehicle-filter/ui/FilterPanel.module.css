@@ -1,47 +1,63 @@
 .panel {
-  background-color: var(--bg-surface-1);
-  padding: var(--space-5);
-  border-right: 1px solid var(--border-subtle);
-  height: calc(100vh - 64px); /* Subtract header height approx */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-6);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  height: max-content;
   position: sticky;
-  top: 64px;
-  overflow-y: auto;
-  width: 240px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
+  top: 100px; /* Aligned with header better */
+  width: 100%;
+  box-shadow: var(--shadow-xl);
 }
 
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.sectionTitle {
-  font-size: var(--text-sm);
+.title {
+  font-size: var(--text-lg);
   font-weight: var(--weight-bold);
   color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .checkboxGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
 }
 
-.mobileToggle {
-  display: none;
+.sliderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
 }
 
-@media (max-width: 768px) {
-  .panel {
-    position: static;
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-subtle);
-  }
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  margin-bottom: var(--space-1);
+}
+
+.sliderHeader span:last-child {
+  color: var(--text-primary);
+  font-weight: var(--weight-medium);
+}
+
+/* Custom override for accordion in FilterPanel context */
+:global(.Accordion_accordion__some-hash) {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Using direct children selector for section separation if needed */
+.panel > :not(:last-child) {
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.05); */
 }

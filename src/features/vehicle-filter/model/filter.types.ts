@@ -1,5 +1,7 @@
 import type { VehicleType } from '@/entities/vehicle';
 
+export type Drivetrain = 'fwd' | 'rwd' | 'awd' | '4wd';
+
 export interface RangeFilter {
   min: number;
   max: number;
@@ -10,12 +12,18 @@ export interface VehicleFilters {
   rangeKm?: RangeFilter;
   batteryKwh?: RangeFilter;
   acceleration?: RangeFilter;
+  chargingPower?: RangeFilter;
   vehicleTypes: VehicleType[];
-  // Add more filters as needed
+  drivetrains: Drivetrain[];
+  availabilityStatus: string[];
 }
 
 export const DEFAULT_FILTERS: VehicleFilters = {
   vehicleTypes: [],
-  priceRange: { min: 0, max: 200000 }, // Example defaults
+  drivetrains: [],
+  availabilityStatus: [],
   rangeKm: { min: 0, max: 1000 },
+  batteryKwh: { min: 0, max: 200 },
+  acceleration: { min: 0, max: 15 },
+  chargingPower: { min: 0, max: 400 },
 };
