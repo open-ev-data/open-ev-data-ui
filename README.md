@@ -11,8 +11,16 @@ The application is a React-based single-page application (SPA) hosted on GitHub 
 ## Documentation
 
 The main documentation for this repository can be found at:
-- [Architecture](docs/ARCHITECTURE.md)
-- [Getting Started](docs/GET_STARTED.md)
+
+### Technical Architecture
+- [Architecture](docs/ARCHITECTURE.md) — Technical architecture, FSD layers, data flow, state management
+- [Getting Started](docs/GET_STARTED.md) — Setup instructions and development workflow
+
+### Visual Design System
+- [Design System](docs/DESIGN_SYSTEM.md) — Color palette, typography, spacing, design tokens
+- [UI Components](docs/UI_COMPONENTS.md) — Component specs, variants, states, data-driven rendering
+- [Responsive Strategy](docs/RESPONSIVE_STRATEGY.md) — Breakpoints, viewport adaptations, touch behavior
+- [Page Layouts](docs/PAGE_LAYOUTS.md) — Page-level structure and component composition
 
 ## License
 

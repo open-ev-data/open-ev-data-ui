@@ -1,6 +1,17 @@
 # Project Architecture
 
-This document covers the architecture used for building the project and the principles to be followed to maintain best practices and achieve optimal results in development, feature implementation, and future project maintenance.
+This document covers the technical architecture, FSD layers, data flow, state management, and development principles. For visual design specifications, see the [Visual Design System](#related-documentation) documents.
+
+### Related Documentation
+
+| Document | Scope |
+| --- | --- |
+| [Design System](DESIGN_SYSTEM.md) | Color palette, typography, spacing, design tokens |
+| [UI Components](UI_COMPONENTS.md) | Component specs, variants, states, data-driven rendering |
+| [Responsive Strategy](RESPONSIVE_STRATEGY.md) | Breakpoints, viewport adaptations, touch behavior |
+| [Page Layouts](PAGE_LAYOUTS.md) | Page-level structure and component composition |
+| [Getting Started](GET_STARTED.md) | Setup instructions and development workflow |
+| [Schema Reference](schema/reference_20260216.json) | Vehicle data field definitions (required vs optional) |
 
 The following main topics are addressed:
 
@@ -55,7 +66,7 @@ The project uses the following technologies with their respective versions:
 | Technology | Version | Purpose |
 | --- | --- | --- |
 | **CSS Modules** | (native Vite) | Local scope styles per component |
-| **CSS Custom Properties** | (native) | Design tokens and themes (light/dark) |
+| **CSS Custom Properties** | (native) | Design tokens and themes — see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) |
 
 ### Quality and Testing
 
