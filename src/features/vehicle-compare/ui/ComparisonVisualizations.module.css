@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-6) 0;
+}
+
+.chartSection {
+  background-color: var(--bg-surface-2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.chartTitle {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .chartSection {
+    padding: var(--space-4);
+  }
+
+  .chartTitle {
+    font-size: var(--text-lg);
+  }
+}

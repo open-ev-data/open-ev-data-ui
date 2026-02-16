@@ -9,8 +9,10 @@ const VehicleDetailPage = lazy(() =>
   import('@/pages/vehicle-detail').then((m) => ({ default: m.VehicleDetailPage }))
 );
 
+const ComparePage = lazy(() => import('@/pages/compare').then((m) => ({ default: m.ComparePage })));
+
 const NotFoundPage = lazy(() =>
-  import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage }))
+  import('@/pages/not-found/ui/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
 );
 
 export const router = createBrowserRouter([
@@ -31,6 +33,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <VehicleDetailPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'compare',
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ComparePage />
           </Suspense>
         ),
       },
