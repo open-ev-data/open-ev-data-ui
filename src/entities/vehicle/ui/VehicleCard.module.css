@@ -136,15 +136,11 @@
 }
 
 .title {
-  font-size: 1.15rem; /* Noticeably larger but still fits 2 lines */
+  font-size: 1.1rem;
   font-weight: var(--weight-bold);
   color: var(--text-primary);
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .subtitle {

@@ -74,7 +74,7 @@ export function VehicleCard({
       <div className={styles.content}>
         <div className={styles.titleGroup}>
           <Link to={detailHref} className={styles.titleLink}>
-            <VehicleTitle vehicle={vehicle} as="h3" className={styles.title} />
+            <VehicleTitle vehicle={vehicle} as="h3" className={styles.title} layout="multiline" />
           </Link>
           <Badge variant="neutral" className={styles.typeBadge}>
             {vehicle.vehicle_type.replace('_', ' ')}
