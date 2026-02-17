@@ -56,11 +56,22 @@
   justify-content: center;
 }
 
+.iconButton {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.iconButton:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-surface-2);
+}
+
 .actions {
   display: flex;
   gap: var(--space-2);
   min-width: 100px; /* Balance logo width */
   justify-content: flex-end;
+  align-items: center;
 }
 
 /* Mobile */
