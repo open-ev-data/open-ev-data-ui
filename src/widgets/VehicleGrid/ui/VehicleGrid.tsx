@@ -11,6 +11,7 @@ interface VehicleGridProps {
   error?: Error | null;
   onRetry?: () => void;
   onCompare?: (vehicle: Vehicle) => void;
+  selectedIds?: string[];
   className?: string;
 }
 
@@ -24,6 +25,7 @@ export function VehicleGrid({
   error,
   onRetry,
   onCompare,
+  selectedIds = [],
   className,
 }: VehicleGridProps) {
   if (isLoading) {
@@ -62,6 +64,7 @@ export function VehicleGrid({
           key={vehicle.unique_code}
           vehicle={vehicle}
           onCompare={onCompare}
+          isSelected={selectedIds.includes(vehicle.unique_code)}
           variant="grid"
         />
       ))}

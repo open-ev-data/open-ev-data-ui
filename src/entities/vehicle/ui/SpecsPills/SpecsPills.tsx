@@ -1,6 +1,7 @@
 import type { Vehicle } from '../../model/vehicle.types';
 import { DataField } from '@/shared/lib/data-presence';
 import { formatCurrency, formatDistance } from '@/shared/lib/format';
+import { isFieldVisible } from '@/shared/config/field-visibility';
 import styles from './SpecsPills.module.css';
 
 interface SpecsPillsProps {
@@ -11,15 +12,17 @@ export const SpecsPills = ({ vehicle }: SpecsPillsProps) => {
   return (
     <div className={styles.container}>
       {/* Price */}
-      <DataField
-        value={vehicle.pricing?.msrp?.[0]}
-        render={(price) => (
-          <div className={styles.pill}>
-            <span className={styles.value}>{formatCurrency(price.amount, price.currency)}</span>
-            <span className={styles.label}>Price</span>
-          </div>
-        )}
-      />
+      {isFieldVisible('pricing') && (
+        <DataField
+          value={vehicle.pricing?.msrp?.[0]}
+          render={(price) => (
+            <div className={styles.pill}>
+              <span className={styles.value}>{formatCurrency(price.amount, price.currency)}</span>
+              <span className={styles.label}>Price</span>
+            </div>
+          )}
+        />
+      )}
 
       {/* Range (WLTP preferably, or first available) */}
       <DataField

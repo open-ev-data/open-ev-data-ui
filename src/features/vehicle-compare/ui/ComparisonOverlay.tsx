@@ -1,7 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { X, Trash2 } from 'lucide-react';
-import { useComparison } from '../model/use-comparison';
+import { useComparison } from '../model/comparison-context';
 import { Button } from '@/shared/ui/Button/Button';
-import { getVehicleImage, getVehicleTitle } from '@/entities/vehicle';
+import { getVehicleImage, getVehicleTitle, VehicleSpecsTable } from '@/entities/vehicle';
 import { cn } from '@/shared/lib/cn';
 import styles from './ComparisonOverlay.module.css';
 
@@ -12,6 +13,7 @@ interface ComparisonOverlayProps {
 }
 
 export function ComparisonOverlay({ isOpen, onClose, className }: ComparisonOverlayProps) {
+  const navigate = useNavigate();
   const { comparedVehicles, removeFromCompare, clearComparison } = useComparison();
 
   return (
@@ -33,22 +35,28 @@ export function ComparisonOverlay({ isOpen, onClose, className }: ComparisonOver
           <div className={styles.vehicleList}>
             {comparedVehicles.map((vehicle) => (
               <div key={vehicle.unique_code} className={styles.item}>
-                <img
-                  src={getVehicleImage(vehicle)}
-                  alt={vehicle.model.name}
-                  className={styles.thumb}
-                />
-                <div className={styles.info}>
-                  <span className={styles.name}>{getVehicleTitle(vehicle)}</span>
+                <div className={styles.itemHeader}>
+                  <img
+                    src={getVehicleImage(vehicle)}
+                    alt={vehicle.model.name}
+                    className={styles.thumb}
+                  />
+                  <div className={styles.info}>
+                    <span className={styles.name}>{getVehicleTitle(vehicle)}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeFromCompare(vehicle.unique_code)}
+                    aria-label="Remove"
+                    className={styles.removeButton}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeFromCompare(vehicle.unique_code)}
-                  aria-label="Remove"
-                >
-                  <Trash2 size={16} />
-                </Button>
+                <div className={styles.itemSpecs}>
+                  <VehicleSpecsTable vehicle={vehicle} variant="visual" />
+                </div>
               </div>
             ))}
           </div>
@@ -59,7 +67,16 @@ export function ComparisonOverlay({ isOpen, onClose, className }: ComparisonOver
         <Button variant="ghost" onClick={clearComparison} disabled={!comparedVehicles.length}>
           Clear All
         </Button>
-        <Button variant="primary" onClick={onClose} disabled={!comparedVehicles.length}>
+        <Button
+          variant="primary"
+          onClick={() => {
+            onClose();
+            const searchParams = new URLSearchParams();
+            searchParams.set('vehicles', comparedVehicles.map((v) => v.unique_code).join(','));
+            navigate(`/compare?${searchParams.toString()}`);
+          }}
+          disabled={!comparedVehicles.length}
+        >
           Full Comparison
         </Button>
       </div>

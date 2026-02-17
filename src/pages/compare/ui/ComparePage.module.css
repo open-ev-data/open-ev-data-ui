@@ -1,3 +1,7 @@
+.shareIcon {
+  margin-right: var(--space-2);
+}
+
 .container {
   max-width: 1400px;
   margin: 0 auto;
@@ -8,8 +12,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-6);
-  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.backLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--text-primary);
 }
 
 .title {

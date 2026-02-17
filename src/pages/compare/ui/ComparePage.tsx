@@ -1,13 +1,17 @@
 import { useSearchParams, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Share2, ChevronLeft } from 'lucide-react';
 import { useVehicle } from '@/entities/vehicle';
 import { CompareTable } from '@/features/vehicle-compare/ui/CompareTable';
 import { ComparisonVisualizations } from '@/features/vehicle-compare/ui/ComparisonVisualizations';
 import { PageLoader, ErrorFallback, Button } from '@/shared/ui';
+import { useComparison } from '@/features/vehicle-compare/model/comparison-context';
 import styles from './ComparePage.module.css';
 
 export const ComparePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { comparedVehicles, setComparedVehicles, removeFromCompare } = useComparison();
   const vehicleCodes = searchParams.get('vehicles')?.split(',').filter(Boolean) || [];
 
   // Fetch vehicles - use conditional hook pattern
@@ -24,8 +28,24 @@ export const ComparePage = () => {
     .map((q) => q.vehicle)
     .filter((v): v is NonNullable<typeof v> => v !== null && v !== undefined);
 
+  // Sync state with Context when vehicles are loaded
+  useEffect(() => {
+    if (isLoading || vehicles.length === 0) return;
+
+    const currentContextIds = comparedVehicles.map((v) => v.unique_code).join(',');
+    const newPageIds = vehicles.map((v) => v.unique_code).join(',');
+
+    if (currentContextIds !== newPageIds) {
+      setComparedVehicles(vehicles);
+    }
+  }, [isLoading, vehicles, comparedVehicles, setComparedVehicles]);
+
   const handleRemoveVehicle = (code: string) => {
     const updatedCodes = vehicleCodes.filter((c) => c !== code);
+
+    // Update Context
+    removeFromCompare(code);
+
     if (updatedCodes.length > 0) {
       setSearchParams({ vehicles: updatedCodes.join(',') });
     } else {
@@ -64,7 +84,7 @@ export const ComparePage = () => {
             '@type': 'Product',
             position: index + 1,
             name: `${v.make.name} ${v.model.name}`,
-            url: `${window.location.origin}/vehicle/${v.unique_code}`,
+            url: `${window.location.origin}/vehicles/${v.unique_code}`,
           })),
         }
       : null;
@@ -122,9 +142,16 @@ export const ComparePage = () => {
 
       <div className={styles.container}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Vehicle Comparison ({vehicles.length})</h1>
+          <div className={styles.headerLeft}>
+            <Link to="/" className={styles.backLink}>
+              <ChevronLeft size={20} />
+              Back
+            </Link>
+            <h1 className={styles.title}>Vehicle Comparison ({vehicles.length})</h1>
+          </div>
           <Button variant="secondary" size="md" onClick={handleShare}>
-            📋 Share Comparison
+            <Share2 size={16} className={styles.shareIcon} />
+            Share Comparison
           </Button>
         </div>
 

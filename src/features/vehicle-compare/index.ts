@@ -1,2 +1,2 @@
-export * from './model/use-comparison';
+export * from './model/comparison-context';
 export * from './ui/ComparisonOverlay';

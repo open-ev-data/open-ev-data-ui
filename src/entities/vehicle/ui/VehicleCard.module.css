@@ -159,3 +159,17 @@
 .compareButton {
   width: 100%;
 }
+
+/* Selected State */
+.selected {
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 0 1px var(--color-primary),
+    var(--shadow-md);
+}
+
+.compareButtonSelected {
+  /* Optional extra styles if needed beyond variant='primary' */
+  border: 1px solid var(--color-primary-light);
+  box-shadow: 0 0 12px hsla(180, 80%, 50%, 0.3);
+}

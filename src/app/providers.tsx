@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { type ReactNode } from 'react';
 import { FilterProvider } from '@/features/vehicle-filter';
+import { ComparisonProvider } from '@/features/vehicle-compare';
 
 import { APP_CONSTANTS } from '../shared/config/constants';
 
@@ -20,7 +21,9 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <FilterProvider>{children}</FilterProvider>
+        <FilterProvider>
+          <ComparisonProvider>{children}</ComparisonProvider>
+        </FilterProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );

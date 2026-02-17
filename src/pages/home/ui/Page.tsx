@@ -103,6 +103,7 @@ export function HomePage() {
           error={queryError}
           onRetry={refetch}
           onCompare={handleAddToCompare}
+          selectedIds={comparedVehicles.map((v) => v.unique_code)}
         />
       </div>
 

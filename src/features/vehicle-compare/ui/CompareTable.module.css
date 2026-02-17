@@ -13,18 +13,22 @@
   min-width: 600px;
 }
 
-.headerRow {
+.headerRow,
+.dataRow {
   display: grid;
-  grid-template-columns: 150px repeat(auto-fit, minmax(200px, 1fr));
+  /* 200px label column + equal width columns for each vehicle */
+  grid-template-columns: 200px repeat(var(--vehicle-count, 1), 1fr);
   gap: var(--space-4);
+  align-items: center;
+}
+
+.headerRow {
   padding-bottom: var(--space-4);
   border-bottom: 1px solid var(--border-subtle);
+  align-items: start;
 }
 
 .dataRow {
-  display: grid;
-  grid-template-columns: 150px repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-4);
   padding: var(--space-3) 0;
   border-bottom: 1px solid var(--border-subtle);
 }
@@ -105,6 +109,20 @@
 .bestValue {
   color: var(--text-accent);
   font-weight: var(--weight-bold);
+  position: relative;
+}
+
+.bestValue::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border: 1px solid var(--color-success); /* Softer border */
+  border-radius: var(--radius-md);
+  background-color: rgba(0, 200, 83, 0.05); /* Very subtle background */
+  pointer-events: none;
 }
 
 /* Mobile responsive */
@@ -129,4 +147,26 @@
   .vehicleTrim {
     font-size: var(--text-xs);
   }
+}
+
+.cellContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.progressBar {
+  width: 80%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 2px;
 }

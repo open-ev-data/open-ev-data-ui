@@ -25,7 +25,7 @@ export function SearchBar({ className }: { className?: string }) {
   }, []);
 
   const handleSelect = (code: string) => {
-    navigate(`/vehicle/${code}`);
+    navigate(`/vehicles/${code}`);
     setIsOpen(false);
     setQuery('');
   };

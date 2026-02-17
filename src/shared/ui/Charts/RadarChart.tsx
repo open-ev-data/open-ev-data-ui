@@ -28,11 +28,7 @@ export const RadarChart = ({ data, vehicles, height = 300 }: RadarChartProps) =>
       <RechartsRadarChart data={data}>
         <PolarGrid stroke="var(--border-subtle)" />
         <PolarAngleAxis dataKey="metric" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
-        <PolarRadiusAxis
-          angle={90}
-          domain={[0, 100]}
-          tick={{ fill: 'var(--text-tertiary)', fontSize: 10 }}
-        />
+        <PolarRadiusAxis angle={90} domain={[0, 100]} axisLine={false} tick={false} />
         <Tooltip
           contentStyle={{
             backgroundColor: 'var(--bg-surface-2)',

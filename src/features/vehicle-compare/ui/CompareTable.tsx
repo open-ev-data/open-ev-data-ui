@@ -1,6 +1,8 @@
 import type { Vehicle } from '@/entities/vehicle';
 import { DataField, hasData } from '@/shared/lib/data-presence';
 import { formatCurrency, formatDistance } from '@/shared/lib/format';
+import { isFieldVisible } from '@/shared/config/field-visibility';
+import { getVehicleImage, getVehicleTitle } from '@/entities/vehicle/model/vehicle.helpers';
 import styles from './CompareTable.module.css';
 
 interface CompareTableProps {
@@ -18,20 +20,33 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
   ): number | undefined => {
     const values = vehicles.map(field).filter((v): v is number => v !== undefined);
     if (values.length === 0) return undefined;
-    return compare === 'min' ? Math.min(...values) : Math.max(...values);
+
+    const best = compare === 'min' ? Math.min(...values) : Math.max(...values);
+
+    // Check for ties - if more than one vehicle has the best value, return undefined (no winner)
+    const count = values.filter((v) => v === best).length;
+    if (count > 1) return undefined;
+
+    return best;
   };
 
   const bestPrice = findBestValue((v) => v.pricing?.msrp?.[0]?.amount, 'min');
   const bestRange = findBestValue((v) => v.range?.rated?.[0]?.range_km, 'max');
   const best0to100 = findBestValue((v) => v.performance?.acceleration_0_100_kmh_s, 'min');
+  const bestBattery = findBestValue((v) => v.battery?.pack_capacity_kwh_net, 'max');
+  const bestAC = findBestValue((v) => v.charging?.ac?.max_power_kw, 'max');
+  const bestDC = findBestValue((v) => v.charging?.dc?.max_power_kw, 'max');
 
   const isBest = (value: number | undefined, bestValue: number | undefined) => {
-    return value !== undefined && value === bestValue;
+    return value !== undefined && bestValue !== undefined && value === bestValue;
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.table}>
+      <div
+        className={styles.table}
+        style={{ '--vehicle-count': vehicles.length } as React.CSSProperties}
+      >
         {/* Vehicle Headers */}
         <div className={styles.headerRow}>
           <div className={styles.labelCell}></div>
@@ -40,48 +55,46 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
               <button
                 onClick={() => onRemoveVehicle(vehicle.unique_code)}
                 className={styles.removeButton}
-                aria-label={`Remove ${vehicle.make.name} ${vehicle.model.name}`}
+                aria-label={`Remove ${getVehicleTitle(vehicle)}`}
               >
                 ×
               </button>
-              {vehicle.images?.exterior_url && (
-                <img
-                  src={vehicle.images.exterior_url}
-                  alt={`${vehicle.make.name} ${vehicle.model.name}`}
-                  className={styles.vehicleImage}
-                />
-              )}
-              <div className={styles.vehicleName}>
-                {vehicle.make.name} {vehicle.model.name}
-              </div>
+              <img
+                src={getVehicleImage(vehicle)}
+                alt={getVehicleTitle(vehicle)}
+                className={styles.vehicleImage}
+              />
+              <div className={styles.vehicleName}>{getVehicleTitle(vehicle)}</div>
               <div className={styles.vehicleTrim}>{vehicle.trim?.name}</div>
             </div>
           ))}
         </div>
 
         {/* Price Row */}
-        <DataField
-          value={vehicles.some((v) => hasData(v.pricing?.msrp?.[0]?.amount))}
-          render={() => (
-            <div className={styles.dataRow}>
-              <div className={styles.labelCell}>Price</div>
-              {vehicles.map((vehicle) => (
-                <div
-                  key={vehicle.unique_code}
-                  className={`${styles.valueCell} ${
-                    isBest(vehicle.pricing?.msrp?.[0]?.amount, bestPrice) ? styles.bestValue : ''
-                  }`}
-                >
-                  <DataField
-                    value={vehicle.pricing?.msrp?.[0]}
-                    render={(pricing) => formatCurrency(pricing.amount, pricing.currency)}
-                    fallback="—"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        />
+        {isFieldVisible('pricing') && (
+          <DataField
+            value={vehicles.some((v) => hasData(v.pricing?.msrp?.[0]?.amount))}
+            render={() => (
+              <div className={styles.dataRow}>
+                <div className={styles.labelCell}>Price</div>
+                {vehicles.map((vehicle) => (
+                  <div
+                    key={vehicle.unique_code}
+                    className={`${styles.valueCell} ${
+                      isBest(vehicle.pricing?.msrp?.[0]?.amount, bestPrice) ? styles.bestValue : ''
+                    }`}
+                  >
+                    <DataField
+                      value={vehicle.pricing?.msrp?.[0]}
+                      render={(pricing) => formatCurrency(pricing.amount, pricing.currency)}
+                      fallback="—"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          />
+        )}
 
         {/* Range Row */}
         <DataField
@@ -89,20 +102,30 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
           render={() => (
             <div className={styles.dataRow}>
               <div className={styles.labelCell}>Range (WLTP)</div>
-              {vehicles.map((vehicle) => (
-                <div
-                  key={vehicle.unique_code}
-                  className={`${styles.valueCell} ${
-                    isBest(vehicle.range?.rated?.[0]?.range_km, bestRange) ? styles.bestValue : ''
-                  }`}
-                >
-                  <DataField
-                    value={vehicle.range?.rated?.[0]?.range_km}
-                    render={(range) => formatDistance(range)}
-                    fallback="—"
-                  />
-                </div>
-              ))}
+              {vehicles.map((vehicle) => {
+                const range = vehicle.range?.rated?.[0]?.range_km;
+                const percentage = range ? Math.min((range / 800) * 100, 100) : 0;
+                return (
+                  <div
+                    key={vehicle.unique_code}
+                    className={`${styles.valueCell} ${
+                      isBest(range, bestRange) ? styles.bestValue : ''
+                    }`}
+                  >
+                    <div className={styles.cellContent}>
+                      <DataField value={range} render={(r) => formatDistance(r)} fallback="—" />
+                      {range && (
+                        <div className={styles.progressBar}>
+                          <div
+                            className={styles.progressFill}
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         />
@@ -113,15 +136,34 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
           render={() => (
             <div className={styles.dataRow}>
               <div className={styles.labelCell}>Battery</div>
-              {vehicles.map((vehicle) => (
-                <div key={vehicle.unique_code} className={styles.valueCell}>
-                  <DataField
-                    value={vehicle.battery?.pack_capacity_kwh_net}
-                    render={(capacity) => `${capacity.toFixed(1)} kWh`}
-                    fallback="—"
-                  />
-                </div>
-              ))}
+              {vehicles.map((vehicle) => {
+                const kwh = vehicle.battery?.pack_capacity_kwh_net;
+                const percentage = kwh ? Math.min((kwh / 150) * 100, 100) : 0;
+                return (
+                  <div
+                    key={vehicle.unique_code}
+                    className={`${styles.valueCell} ${
+                      isBest(kwh, bestBattery) ? styles.bestValue : ''
+                    }`}
+                  >
+                    <div className={styles.cellContent}>
+                      <DataField
+                        value={kwh}
+                        render={(capacity) => `${capacity.toFixed(1)} kWh`}
+                        fallback="—"
+                      />
+                      {kwh && (
+                        <div className={styles.progressBar}>
+                          <div
+                            className={styles.progressFill}
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         />
@@ -132,22 +174,33 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
           render={() => (
             <div className={styles.dataRow}>
               <div className={styles.labelCell}>0-100 km/h</div>
-              {vehicles.map((vehicle) => (
-                <div
-                  key={vehicle.unique_code}
-                  className={`${styles.valueCell} ${
-                    isBest(vehicle.performance?.acceleration_0_100_kmh_s, best0to100)
-                      ? styles.bestValue
-                      : ''
-                  }`}
-                >
-                  <DataField
-                    value={vehicle.performance?.acceleration_0_100_kmh_s}
-                    render={(accel) => `${accel.toFixed(1)}s`}
-                    fallback="—"
-                  />
-                </div>
-              ))}
+              {vehicles.map((vehicle) => {
+                const accel = vehicle.performance?.acceleration_0_100_kmh_s;
+                // 15s -> 0%, 2s -> 100%
+                const percentage = accel
+                  ? Math.max(0, Math.min(((15 - accel) / (15 - 2)) * 100, 100))
+                  : 0;
+                return (
+                  <div
+                    key={vehicle.unique_code}
+                    className={`${styles.valueCell} ${
+                      isBest(accel, best0to100) ? styles.bestValue : ''
+                    }`}
+                  >
+                    <div className={styles.cellContent}>
+                      <DataField value={accel} render={(a) => `${a.toFixed(1)}s`} fallback="—" />
+                      {accel && (
+                        <div className={styles.progressBar}>
+                          <div
+                            className={styles.progressFill}
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         />
@@ -159,7 +212,12 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
             <div className={styles.dataRow}>
               <div className={styles.labelCell}>AC Charging</div>
               {vehicles.map((vehicle) => (
-                <div key={vehicle.unique_code} className={styles.valueCell}>
+                <div
+                  key={vehicle.unique_code}
+                  className={`${styles.valueCell} ${
+                    isBest(vehicle.charging?.ac?.max_power_kw, bestAC) ? styles.bestValue : ''
+                  }`}
+                >
                   <DataField
                     value={vehicle.charging?.ac?.max_power_kw}
                     render={(power) => `${power} kW`}
@@ -178,7 +236,12 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
             <div className={styles.dataRow}>
               <div className={styles.labelCell}>DC Charging</div>
               {vehicles.map((vehicle) => (
-                <div key={vehicle.unique_code} className={styles.valueCell}>
+                <div
+                  key={vehicle.unique_code}
+                  className={`${styles.valueCell} ${
+                    isBest(vehicle.charging?.dc?.max_power_kw, bestDC) ? styles.bestValue : ''
+                  }`}
+                >
                   <DataField
                     value={vehicle.charging?.dc?.max_power_kw}
                     render={(power) => `${power} kW`}

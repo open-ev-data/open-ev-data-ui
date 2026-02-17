@@ -12,16 +12,30 @@ interface VehicleCardProps {
   vehicle: Vehicle;
   variant?: 'grid' | 'list';
   onCompare?: (vehicle: Vehicle) => void;
+  isSelected?: boolean;
   className?: string;
 }
 
-export function VehicleCard({ vehicle, variant = 'grid', onCompare, className }: VehicleCardProps) {
+export function VehicleCard({
+  vehicle,
+  variant = 'grid',
+  onCompare,
+  isSelected = false,
+  className,
+}: VehicleCardProps) {
   const title = getVehicleTitle(vehicle);
   const imageUrl = getVehicleImage(vehicle);
   const detailHref = `/vehicles/${vehicle.unique_code}`;
 
   return (
-    <Card className={cn(styles.card, variant === 'list' ? styles.list : styles.grid, className)}>
+    <Card
+      className={cn(
+        styles.card,
+        variant === 'list' ? styles.list : styles.grid,
+        isSelected && styles.selected,
+        className
+      )}
+    >
       <Link to={detailHref} className={styles.imageContainer}>
         <img src={imageUrl} alt={title} className={styles.image} loading="lazy" />
         {/* Absolute positioned badges could go here (e.g. New, Sale) */}
@@ -42,12 +56,12 @@ export function VehicleCard({ vehicle, variant = 'grid', onCompare, className }:
 
         <div className={styles.actions}>
           <Button
-            variant="secondary"
+            variant={isSelected ? 'primary' : 'secondary'}
             size="sm"
-            className={styles.compareButton}
+            className={cn(styles.compareButton, isSelected && styles.compareButtonSelected)}
             onClick={() => onCompare?.(vehicle)}
           >
-            Compare
+            {isSelected ? 'Added to Compare' : 'Compare'}
           </Button>
           {/* Favorite button could go here */}
         </div>
