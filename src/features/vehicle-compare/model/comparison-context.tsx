@@ -1,20 +1,9 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import type { Vehicle } from '@/entities/vehicle';
+import { ComparisonContext } from './comparison-context-definition';
 
 const STORAGE_KEY = 'open-ev-data-compare';
 const MAX_COMPARE = 3;
-
-interface ComparisonContextValue {
-  comparedVehicles: Vehicle[];
-  setComparedVehicles: (vehicles: Vehicle[]) => void;
-  addToCompare: (vehicle: Vehicle) => void;
-  removeFromCompare: (vehicleId: string) => void;
-  isInCompare: (vehicleId: string) => boolean;
-  clearComparison: () => void;
-  isFull: boolean;
-}
-
-const ComparisonContext = createContext<ComparisonContextValue | undefined>(undefined);
 
 export function ComparisonProvider({ children }: { children: ReactNode }) {
   const [comparedVehicles, setComparedVehicles] = useState<Vehicle[]>(() => {
@@ -64,12 +53,4 @@ export function ComparisonProvider({ children }: { children: ReactNode }) {
   };
 
   return <ComparisonContext.Provider value={value}>{children}</ComparisonContext.Provider>;
-}
-
-export function useComparison() {
-  const context = useContext(ComparisonContext);
-  if (!context) {
-    throw new Error('useComparison must be used within a ComparisonProvider');
-  }
-  return context;
 }

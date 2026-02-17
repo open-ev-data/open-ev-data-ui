@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import type { Vehicle } from '@/entities/vehicle';
 import { DEFAULT_FILTERS } from './filter.types';
 import type { VehicleFilters, FilterOptions, RangeFilter } from './filter.types';
-import { useFilterContext } from './FilterContext';
+import { useFilterContext } from './use-filter-context';
 
 export function useVehicleFilters() {
   const { filters, setFilters } = useFilterContext();

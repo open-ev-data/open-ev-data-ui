@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { X, Trash2 } from 'lucide-react';
-import { useComparison } from '../model/comparison-context';
+import { useComparison } from '../model/use-comparison';
 import { Button } from '@/shared/ui/Button/Button';
 import { VehicleTitle, VehicleSpecsTable } from '@/entities/vehicle';
 import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';

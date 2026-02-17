@@ -6,7 +6,7 @@ import { useVehicle } from '@/entities/vehicle';
 import { CompareTable } from '@/features/vehicle-compare/ui/CompareTable';
 import { ComparisonVisualizations } from '@/features/vehicle-compare/ui/ComparisonVisualizations';
 import { PageLoader, ErrorFallback, Button } from '@/shared/ui';
-import { useComparison } from '@/features/vehicle-compare/model/comparison-context';
+import { useComparison } from '@/features/vehicle-compare';
 import styles from './ComparePage.module.css';
 
 export const ComparePage = () => {
