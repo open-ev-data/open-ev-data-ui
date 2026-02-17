@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import type { Vehicle } from '@/entities/vehicle';
 import { DEFAULT_FILTERS } from './filter.types';
-import type { VehicleFilters, FilterOptions } from './filter.types';
+import type { VehicleFilters, FilterOptions, RangeFilter } from './filter.types';
 import { useFilterContext } from './FilterContext';
 
 export function useVehicleFilters() {
@@ -29,13 +29,14 @@ export function useVehicleFilters() {
     }[] = [];
 
     // Helper to format values
-    const formatValue = (key: keyof VehicleFilters, value: any) => {
+    const formatValue = (value: VehicleFilters[keyof VehicleFilters]) => {
       if (Array.isArray(value)) return `${value.length} selected`;
       if (typeof value === 'object' && value !== null && 'min' in value) {
-        if (value.max >= Number.MAX_SAFE_INTEGER) {
-          return `> ${value.min}`;
+        const rangeValue = value as RangeFilter;
+        if (rangeValue.max >= Number.MAX_SAFE_INTEGER) {
+          return `> ${rangeValue.min}`;
         }
-        return `${value.min} - ${value.max}`;
+        return `${rangeValue.min} - ${rangeValue.max}`;
       }
       return String(value);
     };
@@ -55,8 +56,8 @@ export function useVehicleFilters() {
         currentValue !== null &&
         'min' in currentValue
       ) {
-        const def = defaultValue as any;
-        isActive = def && (currentValue.min !== def.min || currentValue.max !== def.max);
+        const def = defaultValue as RangeFilter | undefined;
+        isActive = !!def && (currentValue.min !== def.min || currentValue.max !== def.max);
       } else {
         isActive = currentValue !== defaultValue;
       }
@@ -65,7 +66,7 @@ export function useVehicleFilters() {
         activeFiltersList.push({
           key: filterKey,
           value: currentValue,
-          label: formatValue(filterKey, currentValue),
+          label: formatValue(currentValue),
         });
       }
     }

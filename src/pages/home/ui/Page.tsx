@@ -42,7 +42,9 @@ export function HomePage() {
     const years = Array.from(new Set(vehicles.map((v) => v.year))).filter(Boolean);
     const vehicleTypes = Array.from(new Set(vehicles.map((v) => v.vehicle_type)));
     // Type assertion for drivetrains as we know they come from the schema but Set returns unknown
-    const drivetrains = Array.from(new Set(vehicles.map((v) => v.powertrain.drivetrain))) as any[];
+    const drivetrains = Array.from(
+      new Set(vehicles.map((v) => v.powertrain.drivetrain))
+    ) as Vehicle['powertrain']['drivetrain'][];
     const availability = Array.from(
       new Set(vehicles.map((v) => v.availability?.status).filter(Boolean))
     ) as string[];
