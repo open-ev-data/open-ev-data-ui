@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import type { Vehicle } from '@/entities/vehicle';
 import { DataField, hasData } from '@/shared/lib/data-presence';
 import { formatCurrency, formatDistance } from '@/shared/lib/format';
@@ -57,7 +58,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                 className={styles.removeButton}
                 aria-label={`Remove ${getVehicleTitle(vehicle)}`}
               >
-                ×
+                <X size={16} />
               </button>
               <img
                 src={getVehicleImage(vehicle)}
@@ -84,6 +85,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                       isBest(vehicle.pricing?.msrp?.[0]?.amount, bestPrice) ? styles.bestValue : ''
                     }`}
                   >
+                    <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
                     <DataField
                       value={vehicle.pricing?.msrp?.[0]}
                       render={(pricing) => formatCurrency(pricing.amount, pricing.currency)}
@@ -113,6 +115,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     }`}
                   >
                     <div className={styles.cellContent}>
+                      <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
                       <DataField value={range} render={(r) => formatDistance(r)} fallback="—" />
                       {range && (
                         <div className={styles.progressBar}>
@@ -147,6 +150,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     }`}
                   >
                     <div className={styles.cellContent}>
+                      <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
                       <DataField
                         value={kwh}
                         render={(capacity) => `${capacity.toFixed(1)} kWh`}
@@ -188,6 +192,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     }`}
                   >
                     <div className={styles.cellContent}>
+                      <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
                       <DataField value={accel} render={(a) => `${a.toFixed(1)}s`} fallback="—" />
                       {accel && (
                         <div className={styles.progressBar}>
@@ -220,8 +225,17 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                 >
                   <DataField
                     value={vehicle.charging?.ac?.max_power_kw}
-                    render={(power) => `${power} kW`}
-                    fallback="—"
+                    render={(power) => (
+                      <>
+                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                        {`${power} kW`}
+                      </>
+                    )}
+                    fallback={
+                      <>
+                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>—
+                      </>
+                    }
                   />
                 </div>
               ))}
@@ -244,8 +258,17 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                 >
                   <DataField
                     value={vehicle.charging?.dc?.max_power_kw}
-                    render={(power) => `${power} kW`}
-                    fallback="—"
+                    render={(power) => (
+                      <>
+                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                        {`${power} kW`}
+                      </>
+                    )}
+                    fallback={
+                      <>
+                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>—
+                      </>
+                    }
                   />
                 </div>
               ))}

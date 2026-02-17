@@ -40,6 +40,7 @@ export function SearchBar({ className }: { className?: string }) {
       <div className={styles.inputWrapper}>
         <Search className={styles.searchIcon} size={20} />
         <input
+          id="global-search-input"
           type="text"
           className={styles.input}
           placeholder="Search EV Models, Specs, or Features..."

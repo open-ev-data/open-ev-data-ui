@@ -25,7 +25,11 @@ export interface RadarChartProps {
 export const RadarChart = ({ data, vehicles, height = 300 }: RadarChartProps) => {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <RechartsRadarChart data={data}>
+      <RechartsRadarChart
+        data={data}
+        outerRadius="70%"
+        margin={{ top: 20, right: 30, left: 30, bottom: 15 }}
+      >
         <PolarGrid stroke="var(--border-subtle)" />
         <PolarAngleAxis dataKey="metric" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
         <PolarRadiusAxis angle={90} domain={[0, 100]} axisLine={false} tick={false} />

@@ -5,7 +5,7 @@ import { Button } from '@/shared/ui/Button/Button';
 import { cn } from '@/shared/lib/cn';
 import logoMini from '@/assets/open-ev-data-logo-mini.png';
 import styles from './LayoutHeader.module.css';
-import { Info } from 'lucide-react';
+import { Info, Github } from 'lucide-react';
 import { AboutModal } from '@/widgets/AboutModal';
 
 export function LayoutHeader({ className }: { className?: string }) {
@@ -32,11 +32,9 @@ export function LayoutHeader({ className }: { className?: string }) {
           <span className={styles.brandName}>OpenEV</span>
           <span className={styles.brandSuffix}>Data Explorer</span>
         </Link>
-
         <div className={styles.searchContainer}>
           <SearchBar />
         </div>
-
         <div className={styles.actions}>
           <Button
             variant="ghost"
@@ -45,15 +43,17 @@ export function LayoutHeader({ className }: { className?: string }) {
             onClick={() => setIsAboutModalOpen(true)}
             aria-label="About OpenEV Data"
           >
-            <Info size={20} />
+            <Info size={24} />
           </Button>
           <Button
             variant="ghost"
             size="sm"
             className={styles.contributeButton}
             onClick={() => window.open('https://github.com/open-ev-data', '_blank')}
+            aria-label="Contribute on GitHub"
           >
-            Contribute on GitHub
+            <Github size={20} className={styles.githubIcon} />
+            <span className={styles.contributeText}>Contribute on GitHub</span>
           </Button>
         </div>
       </header>

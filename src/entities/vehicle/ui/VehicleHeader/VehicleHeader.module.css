@@ -1,5 +1,5 @@
 .header {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 
 .titleRow {
@@ -10,10 +10,16 @@
 }
 
 .title {
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
   color: var(--text-primary);
   margin: 0;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: var(--text-3xl);
+  }
 }
 
 .trim {

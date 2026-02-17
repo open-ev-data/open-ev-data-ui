@@ -10,14 +10,21 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  gap: var(--space-2);
   min-width: 600px;
+}
+
+@media (max-width: 768px) {
+  .table {
+    min-width: 0;
+  }
 }
 
 .headerRow,
 .dataRow {
   display: grid;
-  /* 200px label column + equal width columns for each vehicle */
-  grid-template-columns: 200px repeat(var(--vehicle-count, 1), 1fr);
+  /* 120px label column (sticky) + scrollable vehicle columns */
+  grid-template-columns: 120px repeat(var(--vehicle-count, 1), minmax(140px, 1fr));
   gap: var(--space-4);
   align-items: center;
 }
@@ -43,6 +50,23 @@
   font-weight: var(--weight-medium);
   display: flex;
   align-items: center;
+  position: sticky;
+  left: 0;
+  background-color: var(--bg-surface-2);
+  z-index: 20;
+  padding-right: var(--space-2);
+  /* Add shadow to indicate scroll */
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.mobileVehicleName {
+  display: none;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: var(--space-1);
+  text-align: left;
+  width: 100%;
 }
 
 .vehicleHeader {
@@ -127,26 +151,140 @@
 }
 
 /* Mobile responsive */
+/* Mobile responsive */
 @media (max-width: 768px) {
-  .headerRow,
-  .dataRow {
-    grid-template-columns: 120px repeat(auto-fit, minmax(160px, 1fr));
+  .headerRow {
+    /* Hide normal header row on mobile, maybe replace with a summary if needed,
+       but for now let's just keep the remove buttons accessible or hide and rely on
+       another mechanism. Actually, hiding it simplifies the "Attribute Card" view significantly.
+       But we need a way to remove vehicles.
+       Let's keep it but transform it into a "Vehicles" card.
+    */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background-color: var(--bg-surface-2);
+    border-radius: var(--radius-lg);
+    border-bottom: none;
+    margin-bottom: var(--space-4);
   }
 
-  .labelCell {
-    font-size: var(--text-xs);
+  .headerRow .labelCell {
+    display: none; /* Hide empty label cell in header */
+  }
+
+  .vehicleHeader {
+    flex-direction: row;
+    width: 100%;
+    background-color: var(--bg-surface-1);
+    /* Reserve space for remove button */
+    padding-right: 48px;
   }
 
   .vehicleImage {
-    height: 80px;
+    width: 60px;
+    height: 40px;
+  }
+
+  .removeButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: var(--space-2);
+    /* Improve visibility on mobile */
+    background-color: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 0;
   }
 
   .vehicleName {
+    text-align: left;
     font-size: var(--text-sm);
   }
 
   .vehicleTrim {
-    font-size: var(--text-xs);
+    display: none; /* Simplify header */
+  }
+
+  /* Transform Data Rows into Attribute Cards */
+  .dataRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    background-color: var(--bg-surface-2);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .labelCell {
+    /* The Attribute Title */
+    position: static;
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--bg-surface-3);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    box-shadow: none;
+  }
+
+  .valueCell {
+    /* Each vehicle's value in the list */
+    display: flex;
+    flex-direction: column; /* Label on top, value below */
+    align-items: flex-start;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+    text-align: left;
+    /* Add significant space between cells to separate best value highlight from neighbors/header */
+    margin-top: var(--space-3);
+  }
+
+  .valueCell:last-child {
+    border-bottom: none;
+  }
+
+  .mobileVehicleName {
+    display: block;
+  }
+
+  .cellContent {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .progressBar {
+    width: 100%;
+  }
+  .progressBar {
+    width: 100%;
+  }
+
+  /* Adjust best value for mobile */
+  .bestValue::after {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-success);
+    background-color: rgba(0, 200, 83, 0.05);
+    /* Create space from the top, effectively pushing the highlight down a bit if needed,
+       or we rely on the cell's margin-top we added.
+       Let's stick to the cell margin-top for spacing between items. */
   }
 }
 

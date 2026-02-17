@@ -11,11 +11,17 @@
 .image {
   width: 100%;
   height: auto;
-  max-height: 400px;
+  max-height: 220px;
   object-fit: contain;
   filter: brightness(0.9) contrast(1.1) saturate(0.8);
   opacity: var(--opacity-image);
   transition: var(--transition-transform);
+}
+
+@media (min-width: 768px) {
+  .image {
+    max-height: 400px;
+  }
 }
 
 .image:hover {

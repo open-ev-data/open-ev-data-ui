@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import type { Vehicle } from '@/entities/vehicle';
 import { useVehicles } from '@/entities/vehicle';
@@ -20,7 +21,19 @@ export function HomePage() {
 
   const [isCompareOpen, setIsCompareOpen] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = (searchParams.get('tab') as 'all' | 'favorites') || 'all';
+
+  const setActiveTab = (tab: 'all' | 'favorites') => {
+    setSearchParams((prev) => {
+      if (tab === 'all') {
+        prev.delete('tab');
+      } else {
+        prev.set('tab', tab);
+      }
+      return prev;
+    });
+  };
 
   // Apply filters
   const allFilteredVehicles = vehicles ? applyFilters(vehicles) : [];

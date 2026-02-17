@@ -1,9 +1,26 @@
-import { Home, Search, Heart, Menu } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { Home, Search, Heart } from 'lucide-react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/shared/lib/cn';
 import styles from './BottomNav.module.css';
+import { useFavorites } from '@/features/vehicle-favorites';
 
 export function BottomNav() {
+  const { favoriteIds } = useFavorites();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSearchClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Focus the global search input after scroll triggers
+    setTimeout(() => {
+      document.getElementById('global-search-input')?.focus();
+    }, 100);
+  };
+
+  const handleFavoritesClick = () => {
+    navigate('/?tab=favorites');
+  };
+
   return (
     <nav className={styles.nav}>
       <NavLink to="/" className={({ isActive }) => cn(styles.item, isActive && styles.itemActive)}>
@@ -11,27 +28,23 @@ export function BottomNav() {
         <span className={styles.label}>Home</span>
       </NavLink>
 
-      {/* Search focuses header on desktop, but here acts as a tab if we had a dedicated search page.
-          For now, maybe just scroll to top or focus search?
-          Keeping simple navigation logic nicely fits standard routing.
-      */}
-      <button
-        className={styles.item}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      >
+      <button className={styles.item} onClick={handleSearchClick}>
         <Search size={24} />
         <span className={styles.label}>Search</span>
       </button>
 
-      <button className={styles.item}>
-        <Heart size={24} />
-        <span className={styles.label}>Saved</span>
-      </button>
-
-      <button className={styles.item}>
-        <Menu size={24} />
-        <span className={styles.label}>Menu</span>
-      </button>
+      {favoriteIds.length > 0 && (
+        <button
+          className={cn(
+            styles.item,
+            location.search.includes('tab=favorites') && styles.itemActive
+          )}
+          onClick={handleFavoritesClick}
+        >
+          <Heart size={24} />
+          <span className={styles.label}>Favorites</span>
+        </button>
+      )}
     </nav>
   );
 }
