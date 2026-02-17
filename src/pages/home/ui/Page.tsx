@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { X } from 'lucide-react';
 import type { Vehicle } from '@/entities/vehicle';
@@ -16,6 +16,11 @@ export function HomePage() {
   const { data: vehicles, isLoading, error: queryError, refetch } = useVehicles();
   const { filters, updateFilter, applyFilters, resetFilters, getActiveFilters, removeFilter } =
     useVehicleFilters();
+
+  // Scroll to top when filters are updated to prevent "jumping to bottom" on page shrink
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [filters]);
   const { addToCompare, comparedVehicles } = useComparison();
   const { favoriteIds } = useFavorites();
 
