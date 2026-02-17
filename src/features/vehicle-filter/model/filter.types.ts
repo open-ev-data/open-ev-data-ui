@@ -15,6 +15,7 @@ export interface FilterOptions {
   range: { min: number; max: number };
   battery: { min: number; max: number };
   charging: { min: number; max: number };
+  acCharging: { min: number; max: number };
   acceleration: { min: number; max: number };
 }
 
@@ -26,6 +27,7 @@ export interface VehicleFilters {
   batteryKwh?: RangeFilter;
   acceleration?: RangeFilter;
   chargingPower?: RangeFilter;
+  acChargingPower?: RangeFilter;
   vehicleTypes: VehicleType[];
   drivetrains: Drivetrain[];
   availabilityStatus: string[];
@@ -41,4 +43,5 @@ export const DEFAULT_FILTERS: VehicleFilters = {
   batteryKwh: { min: 0, max: Number.MAX_SAFE_INTEGER },
   acceleration: { min: 0, max: Number.MAX_SAFE_INTEGER },
   chargingPower: { min: 0, max: Number.MAX_SAFE_INTEGER },
+  acChargingPower: { min: 0, max: Number.MAX_SAFE_INTEGER },
 };

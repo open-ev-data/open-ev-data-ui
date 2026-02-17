@@ -61,6 +61,10 @@ export function HomePage() {
       .map((v) => v.charging?.dc?.max_power_kw)
       .filter((v): v is number => typeof v === 'number');
 
+    const acChargingValues = vehicles
+      .map((v) => v.charging?.ac?.max_power_kw)
+      .filter((v): v is number => typeof v === 'number');
+
     const accelValues = vehicles
       .map((v) => v.performance?.acceleration_0_100_kmh_s)
       .filter((v): v is number => typeof v === 'number');
@@ -81,6 +85,10 @@ export function HomePage() {
       charging: {
         min: chargingValues.length ? Math.floor(Math.min(...chargingValues)) : 0,
         max: chargingValues.length ? Math.ceil(Math.max(...chargingValues)) : 0,
+      },
+      acCharging: {
+        min: acChargingValues.length ? Math.floor(Math.min(...acChargingValues)) : 0,
+        max: acChargingValues.length ? Math.ceil(Math.max(...acChargingValues)) : 0,
       },
       acceleration: {
         min: accelValues.length ? Math.floor(Math.min(...accelValues)) : 0,

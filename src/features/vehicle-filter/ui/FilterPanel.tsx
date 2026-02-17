@@ -15,6 +15,7 @@ interface FilterOptions {
   range: { min: number; max: number };
   battery: { min: number; max: number };
   charging: { min: number; max: number };
+  acCharging: { min: number; max: number };
   acceleration: { min: number; max: number };
 }
 
@@ -56,6 +57,7 @@ export function FilterPanel({
   const rangeBounds = options.range || { min: 0, max: 0 };
   const batteryBounds = options.battery || { min: 0, max: 0 };
   const chargingBounds = options.charging || { min: 0, max: 0 };
+  const acChargingBounds = options.acCharging || { min: 0, max: 0 };
   const accelerationBounds = options.acceleration || { min: 0, max: 0 };
 
   const handleTypeChange = (type: VehicleType, checked: boolean) => {
@@ -104,29 +106,6 @@ export function FilterPanel({
 
       <div className={styles.scrollArea}>
         <div className={styles.filterGroup}>
-          <Accordion title="Year" defaultExpanded={true}>
-            <div className={styles.checkboxGroup}>
-              {sortedYears.map((year) => (
-                <Checkbox
-                  key={year}
-                  id={`year-${year}`}
-                  label={year.toString()}
-                  checked={filters.years.includes(year)}
-                  onCheckedChange={(checked) => {
-                    const current = filters.years;
-                    updateFilter(
-                      'years',
-                      checked ? [...current, year] : current.filter((y) => y !== year)
-                    );
-                  }}
-                />
-              ))}
-              {sortedYears.length === 0 && (
-                <div className={styles.emptyState}>No years available</div>
-              )}
-            </div>
-          </Accordion>
-
           {isFieldVisible('range') && (
             <Accordion title="Range (WLTP km)" defaultExpanded={true}>
               <div className={styles.sliderGroup}>
@@ -165,6 +144,31 @@ export function FilterPanel({
                   )}
                   onChange={(val) =>
                     updateFilter('batteryKwh', { ...filters.batteryKwh!, min: val })
+                  }
+                />
+              </div>
+            </Accordion>
+          )}
+
+          {isFieldVisible('charging') && (
+            <Accordion title="AC Charging Power (kW)" defaultExpanded={true}>
+              <div className={styles.sliderGroup}>
+                <div className={styles.sliderHeader}>
+                  <span>
+                    {Math.max(acChargingBounds.min, filters.acChargingPower?.min || 0)} kW
+                  </span>
+                  <span>{acChargingBounds.max} kW</span>
+                </div>
+                <Slider
+                  min={acChargingBounds.min}
+                  max={acChargingBounds.max}
+                  step={1}
+                  value={Math.max(
+                    acChargingBounds.min,
+                    Math.min(acChargingBounds.max, filters.acChargingPower?.min || 0)
+                  )}
+                  onChange={(val) =>
+                    updateFilter('acChargingPower', { ...filters.acChargingPower!, min: val })
                   }
                 />
               </div>
@@ -221,6 +225,28 @@ export function FilterPanel({
         <div className={styles.sectionSeparator} />
 
         <div className={styles.filterGroup}>
+          <Accordion title="Year" defaultExpanded={false}>
+            <div className={styles.checkboxGroup}>
+              {sortedYears.map((year) => (
+                <Checkbox
+                  key={year}
+                  id={`year-${year}`}
+                  label={year.toString()}
+                  checked={filters.years.includes(year)}
+                  onCheckedChange={(checked) => {
+                    const current = filters.years;
+                    updateFilter(
+                      'years',
+                      checked ? [...current, year] : current.filter((y) => y !== year)
+                    );
+                  }}
+                />
+              ))}
+              {sortedYears.length === 0 && (
+                <div className={styles.emptyState}>No years available</div>
+              )}
+            </div>
+          </Accordion>
           <Accordion title="Market Availability">
             <div className={styles.checkboxGroup}>
               {availabilityStatuses.map((status) => (

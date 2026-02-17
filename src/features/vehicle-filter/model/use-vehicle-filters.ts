@@ -148,6 +148,21 @@ export function useVehicleFilters() {
           }
         }
 
+        // AC Charging Power Filter
+        const acChargingMinBound = options?.acCharging.min ?? 0;
+        const currentAcChargingMin = filters.acChargingPower?.min ?? 0;
+
+        if (currentAcChargingMin > acChargingMinBound) {
+          if (!vehicle.charging?.ac?.max_power_kw) return false;
+          const power = vehicle.charging.ac.max_power_kw;
+          if (
+            power < currentAcChargingMin ||
+            (filters.acChargingPower?.max && power > filters.acChargingPower.max)
+          ) {
+            return false;
+          }
+        }
+
         // Acceleration Filter (0-100 km/h)
         const accelMinBound = options?.acceleration.min ?? 0;
         const currentAccelMin = filters.acceleration?.min ?? 0;
