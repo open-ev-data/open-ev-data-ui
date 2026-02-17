@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [1.0.1](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.0.0...v1.0.1) (2026-02-17)
+
+### Bug Fixes
+
+* adjust router for github pages ([a9bb837](https://github.com/open-ev-data/open-ev-data-ui/commit/a9bb8374b31ad13660bdc0ee738bb1bec414ab63))
+
 ## 1.0.0 (2026-02-17)
 
 ### Features
