@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import type { Vehicle } from '@/entities/vehicle';
 import { DEFAULT_FILTERS } from './filter.types';
-import type { VehicleFilters } from './filter.types';
+import type { VehicleFilters, FilterOptions } from './filter.types';
 import { useFilterContext } from './FilterContext';
 
 export function useVehicleFilters() {
@@ -31,8 +31,12 @@ export function useVehicleFilters() {
     // Helper to format values
     const formatValue = (key: keyof VehicleFilters, value: any) => {
       if (Array.isArray(value)) return `${value.length} selected`;
-      if (typeof value === 'object' && value !== null && 'min' in value)
+      if (typeof value === 'object' && value !== null && 'min' in value) {
+        if (value.max >= Number.MAX_SAFE_INTEGER) {
+          return `> ${value.min}`;
+        }
         return `${value.min} - ${value.max}`;
+      }
       return String(value);
     };
 
@@ -69,7 +73,7 @@ export function useVehicleFilters() {
   }, [filters]);
 
   const applyFilters = useCallback(
-    (vehicles: Vehicle[]) => {
+    (vehicles: Vehicle[], options?: FilterOptions) => {
       return vehicles.filter((vehicle) => {
         // Text Search Filter
         if (filters.search) {
@@ -91,9 +95,16 @@ export function useVehicleFilters() {
         }
 
         // Range Filter
-        if (filters.rangeKm && vehicle.range?.rated) {
+        const rangeMinBound = options?.range.min ?? 0;
+        const currentRangeMin = filters.rangeKm?.min ?? 0;
+
+        if (currentRangeMin > rangeMinBound) {
+          if (!vehicle.range?.rated) return false;
           const maxRange = Math.max(...vehicle.range.rated.map((r) => r.range_km));
-          if (maxRange < filters.rangeKm.min || maxRange > filters.rangeKm.max) {
+          if (
+            maxRange < currentRangeMin ||
+            (filters.rangeKm?.max && maxRange > filters.rangeKm.max)
+          ) {
             return false;
           }
         }
@@ -107,25 +118,46 @@ export function useVehicleFilters() {
         }
 
         // Battery Capacity Filter
-        if (filters.batteryKwh && vehicle.battery?.pack_capacity_kwh_net) {
+        const batteryMinBound = options?.battery.min ?? 0;
+        const currentBatteryMin = filters.batteryKwh?.min ?? 0;
+
+        if (currentBatteryMin > batteryMinBound) {
+          if (!vehicle.battery?.pack_capacity_kwh_net) return false;
           const battery = vehicle.battery.pack_capacity_kwh_net;
-          if (battery < filters.batteryKwh.min || battery > filters.batteryKwh.max) {
+          if (
+            battery < currentBatteryMin ||
+            (filters.batteryKwh?.max && battery > filters.batteryKwh.max)
+          ) {
             return false;
           }
         }
 
         // Charging Power Filter (DC)
-        if (filters.chargingPower && vehicle.charging?.dc?.max_power_kw) {
+        const chargingMinBound = options?.charging.min ?? 0;
+        const currentChargingMin = filters.chargingPower?.min ?? 0;
+
+        if (currentChargingMin > chargingMinBound) {
+          if (!vehicle.charging?.dc?.max_power_kw) return false;
           const power = vehicle.charging.dc.max_power_kw;
-          if (power < filters.chargingPower.min || power > filters.chargingPower.max) {
+          if (
+            power < currentChargingMin ||
+            (filters.chargingPower?.max && power > filters.chargingPower.max)
+          ) {
             return false;
           }
         }
 
         // Acceleration Filter (0-100 km/h)
-        if (filters.acceleration && vehicle.performance?.acceleration_0_100_kmh_s) {
+        const accelMinBound = options?.acceleration.min ?? 0;
+        const currentAccelMin = filters.acceleration?.min ?? 0;
+
+        if (currentAccelMin > accelMinBound) {
+          if (!vehicle.performance?.acceleration_0_100_kmh_s) return false;
           const accel = vehicle.performance.acceleration_0_100_kmh_s;
-          if (accel < filters.acceleration.min || accel > filters.acceleration.max) {
+          if (
+            accel < currentAccelMin ||
+            (filters.acceleration?.max && accel > filters.acceleration.max)
+          ) {
             return false;
           }
         }
@@ -136,6 +168,11 @@ export function useVehicleFilters() {
           (!vehicle.availability?.status ||
             !filters.availabilityStatus.includes(vehicle.availability.status))
         ) {
+          return false;
+        }
+
+        // Year Filter
+        if (filters.years.length > 0 && vehicle.year && !filters.years.includes(vehicle.year)) {
           return false;
         }
 

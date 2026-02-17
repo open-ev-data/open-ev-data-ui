@@ -7,9 +7,21 @@ export interface RangeFilter {
   max: number;
 }
 
+export interface FilterOptions {
+  years: number[];
+  vehicleTypes: VehicleType[];
+  drivetrains: Drivetrain[];
+  availability: string[];
+  range: { min: number; max: number };
+  battery: { min: number; max: number };
+  charging: { min: number; max: number };
+  acceleration: { min: number; max: number };
+}
+
 export interface VehicleFilters {
   search?: string;
   priceRange?: RangeFilter;
+  years: number[];
   rangeKm?: RangeFilter;
   batteryKwh?: RangeFilter;
   acceleration?: RangeFilter;
@@ -24,8 +36,9 @@ export const DEFAULT_FILTERS: VehicleFilters = {
   vehicleTypes: [],
   drivetrains: [],
   availabilityStatus: [],
-  rangeKm: { min: 0, max: 1000 },
-  batteryKwh: { min: 0, max: 200 },
-  acceleration: { min: 0, max: 15 },
-  chargingPower: { min: 0, max: 400 },
+  years: [],
+  rangeKm: { min: 0, max: Number.MAX_SAFE_INTEGER },
+  batteryKwh: { min: 0, max: Number.MAX_SAFE_INTEGER },
+  acceleration: { min: 0, max: Number.MAX_SAFE_INTEGER },
+  chargingPower: { min: 0, max: Number.MAX_SAFE_INTEGER },
 };

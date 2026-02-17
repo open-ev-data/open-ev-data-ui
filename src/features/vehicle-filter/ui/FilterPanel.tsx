@@ -7,15 +7,34 @@ import { isFieldVisible } from '@/shared/config/field-visibility';
 import { cn } from '@/shared/lib/cn';
 import styles from './FilterPanel.module.css';
 
+interface FilterOptions {
+  years: number[];
+  vehicleTypes: VehicleType[];
+  drivetrains: Drivetrain[];
+  availability: string[];
+  range: { min: number; max: number };
+  battery: { min: number; max: number };
+  charging: { min: number; max: number };
+  acceleration: { min: number; max: number };
+}
+
 interface FilterPanelProps {
   className?: string;
   filters: ReturnType<typeof useVehicleFilters>['filters'];
   updateFilter: ReturnType<typeof useVehicleFilters>['updateFilter'];
   resetFilters: () => void;
+  options?: Partial<FilterOptions>;
 }
 
-export function FilterPanel({ className, filters, updateFilter, resetFilters }: FilterPanelProps) {
-  const VEHICLE_TYPES: VehicleType[] = [
+export function FilterPanel({
+  className,
+  filters,
+  updateFilter,
+  resetFilters,
+  options = {},
+}: FilterPanelProps) {
+  const years = options.years || [];
+  const vehicleTypes = options.vehicleTypes || [
     'passenger_car',
     'suv',
     'pickup',
@@ -25,10 +44,19 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
     'commercial',
     'truck',
   ];
+  const drivetrains = options.drivetrains || ['fwd', 'rwd', 'awd', '4wd'];
+  const availabilityStatuses = options.availability || [
+    'production',
+    'discontinued',
+    'concept',
+    'announced',
+    'prototype',
+  ];
 
-  const DRIVETRAINS: Drivetrain[] = ['fwd', 'rwd', 'awd', '4wd'];
-
-  const AVAILABILITY_STATUSES = ['production', 'discontinued', 'concept', 'announced', 'prototype'];
+  const rangeBounds = options.range || { min: 0, max: 0 };
+  const batteryBounds = options.battery || { min: 0, max: 0 };
+  const chargingBounds = options.charging || { min: 0, max: 0 };
+  const accelerationBounds = options.acceleration || { min: 0, max: 0 };
 
   const handleTypeChange = (type: VehicleType, checked: boolean) => {
     const current = filters.vehicleTypes;
@@ -50,6 +78,8 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
       checked ? [...current, status] : current.filter((s) => s !== status)
     );
   };
+
+  const sortedYears = [...years].sort((a, b) => b - a);
 
   return (
     <aside className={cn(styles.panel, className)}>
@@ -74,18 +104,44 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
 
       <div className={styles.scrollArea}>
         <div className={styles.filterGroup}>
+          <Accordion title="Year" defaultExpanded={true}>
+            <div className={styles.checkboxGroup}>
+              {sortedYears.map((year) => (
+                <Checkbox
+                  key={year}
+                  id={`year-${year}`}
+                  label={year.toString()}
+                  checked={filters.years.includes(year)}
+                  onCheckedChange={(checked) => {
+                    const current = filters.years;
+                    updateFilter(
+                      'years',
+                      checked ? [...current, year] : current.filter((y) => y !== year)
+                    );
+                  }}
+                />
+              ))}
+              {sortedYears.length === 0 && (
+                <div className={styles.emptyState}>No years available</div>
+              )}
+            </div>
+          </Accordion>
+
           {isFieldVisible('range') && (
             <Accordion title="Range (WLTP km)" defaultExpanded={true}>
               <div className={styles.sliderGroup}>
                 <div className={styles.sliderHeader}>
-                  <span>{filters.rangeKm?.min} km</span>
-                  <span>{filters.rangeKm?.max} km</span>
+                  <span>{Math.max(rangeBounds.min, filters.rangeKm?.min || 0)} km</span>
+                  <span>{rangeBounds.max} km</span>
                 </div>
                 <Slider
-                  min={0}
-                  max={1000}
+                  min={rangeBounds.min}
+                  max={rangeBounds.max}
                   step={10}
-                  value={filters.rangeKm?.min || 0}
+                  value={Math.max(
+                    rangeBounds.min,
+                    Math.min(rangeBounds.max, filters.rangeKm?.min || 0)
+                  )}
                   onChange={(val) => updateFilter('rangeKm', { ...filters.rangeKm!, min: val })}
                 />
               </div>
@@ -96,14 +152,17 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
             <Accordion title="Battery Capacity (kWh)" defaultExpanded={true}>
               <div className={styles.sliderGroup}>
                 <div className={styles.sliderHeader}>
-                  <span>{filters.batteryKwh?.min} kWh</span>
-                  <span>{filters.batteryKwh?.max} kWh</span>
+                  <span>{Math.max(batteryBounds.min, filters.batteryKwh?.min || 0)} kWh</span>
+                  <span>{batteryBounds.max} kWh</span>
                 </div>
                 <Slider
-                  min={0}
-                  max={200}
+                  min={batteryBounds.min}
+                  max={batteryBounds.max}
                   step={5}
-                  value={filters.batteryKwh?.min || 0}
+                  value={Math.max(
+                    batteryBounds.min,
+                    Math.min(batteryBounds.max, filters.batteryKwh?.min || 0)
+                  )}
                   onChange={(val) =>
                     updateFilter('batteryKwh', { ...filters.batteryKwh!, min: val })
                   }
@@ -116,14 +175,17 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
             <Accordion title="DC Charging Power (kW)" defaultExpanded={true}>
               <div className={styles.sliderGroup}>
                 <div className={styles.sliderHeader}>
-                  <span>{filters.chargingPower?.min} kW</span>
-                  <span>{filters.chargingPower?.max} kW</span>
+                  <span>{Math.max(chargingBounds.min, filters.chargingPower?.min || 0)} kW</span>
+                  <span>{chargingBounds.max} kW</span>
                 </div>
                 <Slider
-                  min={0}
-                  max={400}
+                  min={chargingBounds.min}
+                  max={chargingBounds.max}
                   step={10}
-                  value={filters.chargingPower?.min || 0}
+                  value={Math.max(
+                    chargingBounds.min,
+                    Math.min(chargingBounds.max, filters.chargingPower?.min || 0)
+                  )}
                   onChange={(val) =>
                     updateFilter('chargingPower', { ...filters.chargingPower!, min: val })
                   }
@@ -136,14 +198,17 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
             <Accordion title="0-100 km/h (s)" defaultExpanded={true}>
               <div className={styles.sliderGroup}>
                 <div className={styles.sliderHeader}>
-                  <span>{filters.acceleration?.min} s</span>
-                  <span>{filters.acceleration?.max} s</span>
+                  <span>{Math.max(accelerationBounds.min, filters.acceleration?.min || 0)} s</span>
+                  <span>{accelerationBounds.max} s</span>
                 </div>
                 <Slider
-                  min={0}
-                  max={15}
+                  min={accelerationBounds.min}
+                  max={accelerationBounds.max}
                   step={0.5}
-                  value={filters.acceleration?.min || 0}
+                  value={Math.max(
+                    accelerationBounds.min,
+                    Math.min(accelerationBounds.max, filters.acceleration?.min || 0)
+                  )}
                   onChange={(val) =>
                     updateFilter('acceleration', { ...filters.acceleration!, min: val })
                   }
@@ -158,7 +223,7 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
         <div className={styles.filterGroup}>
           <Accordion title="Market Availability">
             <div className={styles.checkboxGroup}>
-              {AVAILABILITY_STATUSES.map((status) => (
+              {availabilityStatuses.map((status) => (
                 <Checkbox
                   key={status}
                   id={`status-${status}`}
@@ -172,7 +237,7 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
 
           <Accordion title="Vehicle Type">
             <div className={styles.checkboxGroup}>
-              {VEHICLE_TYPES.map((type) => (
+              {vehicleTypes.map((type) => (
                 <Checkbox
                   key={type}
                   id={`type-${type}`}
@@ -186,7 +251,7 @@ export function FilterPanel({ className, filters, updateFilter, resetFilters }: 
 
           <Accordion title="Drivetrain">
             <div className={styles.checkboxGroup}>
-              {DRIVETRAINS.map((dt) => (
+              {drivetrains.map((dt) => (
                 <Checkbox
                   key={dt}
                   id={`dt-${dt}`}
