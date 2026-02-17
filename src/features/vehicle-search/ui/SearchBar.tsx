@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { useVehicleSearch } from '../model/use-vehicle-search';
 import { Spinner } from '@/shared/ui/Spinner/Spinner';
-import { getVehicleImage, getVehicleTitle } from '@/entities/vehicle';
+import { getVehicleTitle } from '@/entities/vehicle';
+import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
+import { generateMakeHue } from '@/shared/lib/color-generator';
 import { cn } from '@/shared/lib/cn';
 import styles from './SearchBar.module.css';
 
@@ -63,9 +65,12 @@ export function SearchBar({ className }: { className?: string }) {
                 key={vehicle.unique_code}
                 className={styles.resultItem}
                 onClick={() => handleSelect(vehicle.unique_code)}
+                style={
+                  { '--vehicle-hue': generateMakeHue(vehicle.make.name) } as React.CSSProperties
+                }
               >
                 <img
-                  src={getVehicleImage(vehicle)}
+                  src={getVehicleTypeImage(vehicle.vehicle_type)}
                   alt=""
                   className={styles.thumb}
                   loading="lazy"

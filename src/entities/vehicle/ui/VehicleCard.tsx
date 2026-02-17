@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import type { Vehicle } from '../model/vehicle.types';
-import { getVehicleImage, getVehicleTitle } from '../model/vehicle.helpers';
+import { getVehicleTitle } from '../model/vehicle.helpers';
+import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
+import { generateMakeHue } from '@/shared/lib/color-generator';
 import { Card } from '@/shared/ui/Card/Card';
 import { Badge } from '@/shared/ui/Badge/Badge';
 import { Button } from '@/shared/ui/Button/Button';
@@ -27,7 +29,10 @@ export function VehicleCard({
 }: VehicleCardProps) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const title = getVehicleTitle(vehicle);
-  const imageUrl = getVehicleImage(vehicle);
+  // Use the standardized type image instead of the specific vehicle image
+  const imageUrl = getVehicleTypeImage(vehicle.vehicle_type);
+  const hue = generateMakeHue(vehicle.make.name);
+
   const detailHref = `/vehicles/${vehicle.unique_code}`;
   const isFav = isFavorite(vehicle.unique_code);
 
@@ -40,7 +45,11 @@ export function VehicleCard({
         className
       )}
     >
-      <Link to={detailHref} className={styles.imageContainer}>
+      <Link
+        to={detailHref}
+        className={styles.imageContainer}
+        style={{ '--vehicle-hue': hue } as React.CSSProperties}
+      >
         <img src={imageUrl} alt={title} className={styles.image} loading="lazy" />
         {/* Absolute positioned badges could go here (e.g. New, Sale) */}
         <button

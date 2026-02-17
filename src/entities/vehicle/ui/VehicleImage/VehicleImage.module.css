@@ -13,8 +13,9 @@
   height: auto;
   max-height: 220px;
   object-fit: contain;
-  filter: brightness(0.9) contrast(1.1) saturate(0.8);
-  opacity: var(--opacity-image);
+  object-fit: contain;
+  filter: sepia(1) saturate(3) hue-rotate(calc(var(--vehicle-hue) * 1deg - 50deg))
+    drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
   transition: var(--transition-transform);
 }
 

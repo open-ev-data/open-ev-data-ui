@@ -2,7 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import { X, Trash2 } from 'lucide-react';
 import { useComparison } from '../model/comparison-context';
 import { Button } from '@/shared/ui/Button/Button';
-import { getVehicleImage, getVehicleTitle, VehicleSpecsTable } from '@/entities/vehicle';
+import { getVehicleTitle, VehicleSpecsTable } from '@/entities/vehicle';
+import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
+import { generateMakeHue } from '@/shared/lib/color-generator';
 import { cn } from '@/shared/lib/cn';
 import styles from './ComparisonOverlay.module.css';
 
@@ -34,10 +36,16 @@ export function ComparisonOverlay({ isOpen, onClose, className }: ComparisonOver
         ) : (
           <div className={styles.vehicleList}>
             {comparedVehicles.map((vehicle) => (
-              <div key={vehicle.unique_code} className={styles.item}>
+              <div
+                key={vehicle.unique_code}
+                className={styles.item}
+                style={
+                  { '--vehicle-hue': generateMakeHue(vehicle.make.name) } as React.CSSProperties
+                }
+              >
                 <div className={styles.itemHeader}>
                   <img
-                    src={getVehicleImage(vehicle)}
+                    src={getVehicleTypeImage(vehicle.vehicle_type)}
                     alt={vehicle.model.name}
                     className={styles.thumb}
                   />

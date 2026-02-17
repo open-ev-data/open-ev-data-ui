@@ -96,7 +96,17 @@
   height: 32px;
   object-fit: contain;
   border-radius: var(--radius-sm);
-  background-color: var(--bg-surface-1);
+  background-color: transparent;
+  filter: sepia(1) saturate(3) hue-rotate(calc(var(--vehicle-hue) * 1deg - 50deg))
+    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  transition: all 0.2s ease;
+}
+
+/* Subtle glow on hover of the item */
+.resultItem:hover .thumb {
+  filter: sepia(1) saturate(3) hue-rotate(calc(var(--vehicle-hue) * 1deg - 50deg))
+    drop-shadow(0 0 8px hsla(var(--vehicle-hue), 100%, 50%, 0.4));
+  transform: scale(1.1);
 }
 
 .info {

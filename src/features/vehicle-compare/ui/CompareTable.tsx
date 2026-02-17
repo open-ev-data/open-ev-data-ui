@@ -3,7 +3,9 @@ import type { Vehicle } from '@/entities/vehicle';
 import { DataField, hasData } from '@/shared/lib/data-presence';
 import { formatCurrency, formatDistance } from '@/shared/lib/format';
 import { isFieldVisible } from '@/shared/config/field-visibility';
-import { getVehicleImage, getVehicleTitle } from '@/entities/vehicle/model/vehicle.helpers';
+import { getVehicleTitle } from '@/entities/vehicle/model/vehicle.helpers';
+import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
+import { generateMakeHue } from '@/shared/lib/color-generator';
 import styles from './CompareTable.module.css';
 
 interface CompareTableProps {
@@ -52,7 +54,11 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
         <div className={styles.headerRow}>
           <div className={styles.labelCell}></div>
           {vehicles.map((vehicle) => (
-            <div key={vehicle.unique_code} className={styles.vehicleHeader}>
+            <div
+              key={vehicle.unique_code}
+              className={styles.vehicleHeader}
+              style={{ '--vehicle-hue': generateMakeHue(vehicle.make.name) } as React.CSSProperties}
+            >
               <button
                 onClick={() => onRemoveVehicle(vehicle.unique_code)}
                 className={styles.removeButton}
@@ -61,7 +67,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                 <X size={16} />
               </button>
               <img
-                src={getVehicleImage(vehicle)}
+                src={getVehicleTypeImage(vehicle.vehicle_type)}
                 alt={getVehicleTitle(vehicle)}
                 className={styles.vehicleImage}
               />
