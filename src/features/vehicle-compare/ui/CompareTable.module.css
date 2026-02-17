@@ -69,6 +69,7 @@
   padding: var(--space-1);
   border-radius: var(--radius-sm);
   transition: var(--transition-colors);
+  z-index: 10;
 }
 
 .removeButton:hover {
