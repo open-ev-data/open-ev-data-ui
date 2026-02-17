@@ -59,15 +59,59 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
-.title {
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-bold);
+@media (min-width: 1024px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-6);
+  position: relative;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  font-family: var(--font-primary);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tabButton:hover {
   color: var(--text-primary);
-  flex-shrink: 0;
+}
+
+.activeTab {
+  color: var(--text-primary); /* Keep white/primary text */
+  text-shadow: 0 0 20px hsla(180, 80%, 50%, 0.3);
+}
+
+.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px hsla(180, 80%, 50%, 0.6);
 }
 
 .activeFilters {
@@ -127,10 +171,13 @@
 }
 
 .count {
-  color: var(--text-secondary);
   font-size: var(--text-base);
+  color: var(--text-secondary);
   font-weight: var(--weight-regular);
-  margin-left: var(--space-2);
+}
+
+.activeTab .count {
+  color: var(--color-primary);
 }
 
 .headerActions {

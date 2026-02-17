@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import type { Vehicle } from '../model/vehicle.types';
 import { getVehicleImage, getVehicleTitle } from '../model/vehicle.helpers';
 import { Card } from '@/shared/ui/Card/Card';
 import { Badge } from '@/shared/ui/Badge/Badge';
 import { Button } from '@/shared/ui/Button/Button';
 import { VehicleSpecsTable } from './VehicleSpecsTable';
+import { useFavorites } from '@/features/vehicle-favorites';
 import { cn } from '@/shared/lib/cn';
 import styles from './VehicleCard.module.css';
 
@@ -23,9 +25,11 @@ export function VehicleCard({
   isSelected = false,
   className,
 }: VehicleCardProps) {
+  const { isFavorite, toggleFavorite } = useFavorites();
   const title = getVehicleTitle(vehicle);
   const imageUrl = getVehicleImage(vehicle);
   const detailHref = `/vehicles/${vehicle.unique_code}`;
+  const isFav = isFavorite(vehicle.unique_code);
 
   return (
     <Card
@@ -39,6 +43,22 @@ export function VehicleCard({
       <Link to={detailHref} className={styles.imageContainer}>
         <img src={imageUrl} alt={title} className={styles.image} loading="lazy" />
         {/* Absolute positioned badges could go here (e.g. New, Sale) */}
+        <button
+          className={cn(styles.favoriteButton, isFav && styles.favoriteActive)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFavorite(vehicle.unique_code);
+          }}
+          aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
+          title={isFav ? 'Remove from favorites' : 'Add to favorites'}
+        >
+          <Heart
+            className={styles.heartIcon}
+            fill={isFav ? 'currentColor' : 'none'}
+            strokeWidth={2}
+          />
+        </button>
       </Link>
 
       <div className={styles.content}>
@@ -63,7 +83,6 @@ export function VehicleCard({
           >
             {isSelected ? 'Added to Compare' : 'Compare'}
           </Button>
-          {/* Favorite button could go here */}
         </div>
       </div>
     </Card>

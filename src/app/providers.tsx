@@ -3,6 +3,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { type ReactNode } from 'react';
 import { FilterProvider } from '@/features/vehicle-filter';
 import { ComparisonProvider } from '@/features/vehicle-compare';
+import { FavoritesProvider } from '@/features/vehicle-favorites';
 
 import { APP_CONSTANTS } from '../shared/config/constants';
 
@@ -21,9 +22,11 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <FilterProvider>
-          <ComparisonProvider>{children}</ComparisonProvider>
-        </FilterProvider>
+        <FavoritesProvider>
+          <FilterProvider>
+            <ComparisonProvider>{children}</ComparisonProvider>
+          </FilterProvider>
+        </FavoritesProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );

@@ -4,6 +4,7 @@ import type { Vehicle } from '@/entities/vehicle';
 import { useVehicles } from '@/entities/vehicle';
 import { useVehicleFilters, FilterPanel } from '@/features/vehicle-filter';
 import { useComparison, ComparisonOverlay } from '@/features/vehicle-compare';
+import { useFavorites } from '@/features/vehicle-favorites';
 import { VehicleGrid } from '@/widgets/VehicleGrid';
 import { useSEO, generateWebSiteSchema, generateOrganizationSchema } from '@/shared/seo';
 import { Button } from '@/shared/ui/Button/Button';
@@ -15,12 +16,27 @@ export function HomePage() {
   const { filters, updateFilter, applyFilters, resetFilters, getActiveFilters, removeFilter } =
     useVehicleFilters();
   const { addToCompare, comparedVehicles } = useComparison();
+  const { favoriteIds } = useFavorites();
 
   const [isCompareOpen, setIsCompareOpen] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
 
   // Apply filters
-  const filteredVehicles = vehicles ? applyFilters(vehicles) : [];
+  const allFilteredVehicles = vehicles ? applyFilters(vehicles) : [];
+
+  // Filter for Favorites
+  const favoritesFilteredVehicles = allFilteredVehicles.filter((v) =>
+    favoriteIds.includes(v.unique_code)
+  );
+
+  // Displayed Vehicles based on Tab
+  const displayedVehicles = activeTab === 'all' ? allFilteredVehicles : favoritesFilteredVehicles;
+
+  // Counts
+  const allCount = allFilteredVehicles.length;
+  // For favorites count, we want to know how many favorites match the current filter
+  const favoritesCount = favoritesFilteredVehicles.length;
 
   const handleCompareClick = () => {
     setIsCompareOpen(true);
@@ -56,10 +72,24 @@ export function HomePage() {
       {/* Main Content */}
       <div className={styles.content}>
         <header className={styles.header}>
-          <h1 className={styles.title}>
-            All Vehicles
-            {!isLoading && <span className={styles.count}>({filteredVehicles.length})</span>}
-          </h1>
+          <div className={styles.tabs}>
+            <button
+              className={cn(styles.tabButton, activeTab === 'all' && styles.activeTab)}
+              onClick={() => setActiveTab('all')}
+            >
+              All Vehicles
+              {!isLoading && <span className={styles.count}>({allCount})</span>}
+            </button>
+            {favoriteIds.length > 0 && (
+              <button
+                className={cn(styles.tabButton, activeTab === 'favorites' && styles.activeTab)}
+                onClick={() => setActiveTab('favorites')}
+              >
+                Favorites
+                <span className={styles.count}>({favoritesCount})</span>
+              </button>
+            )}
+          </div>
 
           <div className={styles.activeFilters}>
             {getActiveFilters().map((filter) => (
@@ -98,7 +128,7 @@ export function HomePage() {
         </header>
 
         <VehicleGrid
-          vehicles={filteredVehicles}
+          vehicles={displayedVehicles}
           isLoading={isLoading}
           error={queryError}
           onRetry={refetch}
