@@ -15,43 +15,48 @@ const NotFoundPage = lazy(() =>
   import('@/pages/not-found/ui/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
 );
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <AppLayout />,
+      children: [
+        {
+          index: true,
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <HomePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'vehicles/:code',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <VehicleDetailPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'compare',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <ComparePage />
+            </Suspense>
+          ),
+        },
+        {
+          path: '*',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <NotFoundPage />
+            </Suspense>
+          ),
+        },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <AppLayout />,
-    children: [
-      {
-        index: true,
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <HomePage />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'vehicles/:code',
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <VehicleDetailPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'compare',
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <ComparePage />
-          </Suspense>
-        ),
-      },
-      {
-        path: '*',
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <NotFoundPage />
-          </Suspense>
-        ),
-      },
-    ],
-  },
-]);
+    basename: import.meta.env.BASE_URL,
+  }
+);
