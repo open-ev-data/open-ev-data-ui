@@ -1,0 +1,76 @@
+.button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.8);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  animation: float 4s ease-in-out infinite;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.button:hover {
+  background: var(--surface-elevated);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--accent-cyan-transparent) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.button:hover .glow {
+  opacity: 0.3;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Override float animation when not visible to avoid issues */
+.button:not(.visible) {
+  animation: none;
+}
+
+@media (max-width: 768px) {
+  .button {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 45px;
+    height: 45px;
+  }
+}

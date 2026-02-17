@@ -118,6 +118,11 @@ export function useVehicleFilters() {
           return false;
         }
 
+        // Make Filter
+        if (filters.makes.length > 0 && !filters.makes.includes(vehicle.make.name)) {
+          return false;
+        }
+
         // Battery Capacity Filter
         const batteryMinBound = options?.battery.min ?? 0;
         const currentBatteryMin = filters.batteryKwh?.min ?? 0;

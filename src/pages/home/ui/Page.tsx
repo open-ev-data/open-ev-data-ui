@@ -45,6 +45,7 @@ export function HomePage() {
     const drivetrains = Array.from(
       new Set(vehicles.map((v) => v.powertrain.drivetrain))
     ) as Vehicle['powertrain']['drivetrain'][];
+    const makes = Array.from(new Set(vehicles.map((v) => v.make.name))).sort();
     const availability = Array.from(
       new Set(vehicles.map((v) => v.availability?.status).filter(Boolean))
     ) as string[];
@@ -73,6 +74,7 @@ export function HomePage() {
       years,
       vehicleTypes,
       drivetrains,
+      makes,
       availability,
       range: {
         min: rangeValues.length ? Math.floor(Math.min(...rangeValues)) : 0,

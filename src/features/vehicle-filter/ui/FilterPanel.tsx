@@ -11,6 +11,7 @@ interface FilterOptions {
   years: number[];
   vehicleTypes: VehicleType[];
   drivetrains: Drivetrain[];
+  makes: string[];
   availability: string[];
   range: { min: number; max: number };
   battery: { min: number; max: number };
@@ -46,6 +47,7 @@ export function FilterPanel({
     'truck',
   ];
   const drivetrains = options.drivetrains || ['fwd', 'rwd', 'awd', '4wd'];
+  const makes = options.makes || [];
   const availabilityStatuses = options.availability || [
     'production',
     'discontinued',
@@ -225,6 +227,26 @@ export function FilterPanel({
         <div className={styles.sectionSeparator} />
 
         <div className={styles.filterGroup}>
+          <Accordion title="Brands" defaultExpanded={false}>
+            <div className={styles.checkboxGroup}>
+              {makes.map((make) => (
+                <Checkbox
+                  key={make}
+                  id={`make-${make}`}
+                  label={make}
+                  checked={filters.makes.includes(make)}
+                  onCheckedChange={(checked) => {
+                    const current = filters.makes;
+                    updateFilter(
+                      'makes',
+                      checked ? [...current, make] : current.filter((m) => m !== make)
+                    );
+                  }}
+                />
+              ))}
+              {makes.length === 0 && <div className={styles.emptyState}>No brands available</div>}
+            </div>
+          </Accordion>
           <Accordion title="Year" defaultExpanded={false}>
             <div className={styles.checkboxGroup}>
               {sortedYears.map((year) => (
