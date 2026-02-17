@@ -1,10 +1,15 @@
+import { APP_CONSTANTS } from '@/shared/config/constants';
+
 /**
  * Generates a consistent hue (0-360) based on the input string.
+ * Uses HUE_SALT from config to allow rotation of the color palette.
  */
 export const generateMakeHue = (str: string): number => {
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  const combinedStr = str + APP_CONSTANTS.VEHICLE_COLORS.HUE_SALT;
+
+  for (let i = 0; i < combinedStr.length; i++) {
+    hash = combinedStr.charCodeAt(i) + ((hash << 5) - hash);
   }
   return Math.abs(hash % 360);
 };

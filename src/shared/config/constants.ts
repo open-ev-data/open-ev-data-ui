@@ -14,4 +14,7 @@ export const APP_CONSTANTS = {
   TIMEOUTS: {
     FETCH_TIMEOUT_MS: 15000, // 15 seconds
   },
+  VEHICLE_COLORS: {
+    HUE_SALT: 10, // Change this to globally shift color assignments (deterministic based on make)
+  },
 } as const;
