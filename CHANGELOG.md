@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [1.3.0](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.2.0...v1.3.0) (2026-02-17)
+
+### Features
+
+* **readme:** replace to latest readme version ([9a310fc](https://github.com/open-ev-data/open-ev-data-ui/commit/9a310fcc5f42669ee0f940fb713ff6199888e257))
+
+### Documentation
+
+* include get started ([3554441](https://github.com/open-ev-data/open-ev-data-ui/commit/35544413506a7791564549e98c5843c207a0f5c2))
+
 ## [1.2.0](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.1.0...v1.2.0) (2026-02-17)
 
 ### Features
