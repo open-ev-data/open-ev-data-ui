@@ -104,8 +104,30 @@ export function HomePage() {
     };
   }, [vehicles]);
 
-  // Apply filters
-  const allFilteredVehicles = vehicles ? applyFilters(vehicles, filterOptions) : [];
+  // Apply filters and custom sorting
+  const allFilteredVehicles = useMemo(() => {
+    if (!vehicles) return [];
+
+    const filtered = applyFilters(vehicles, filterOptions);
+
+    return [...filtered].sort((a, b) => {
+      // 1. Year (Descending)
+      const yearA = a.year || 0;
+      const yearB = b.year || 0;
+      if (yearB !== yearA) return yearB - yearA;
+
+      // 2. Variant Name (Ascending)
+      const variantA = a.variant?.name || '';
+      const variantB = b.variant?.name || '';
+      const variantCompare = variantA.localeCompare(variantB);
+      if (variantCompare !== 0) return variantCompare;
+
+      // 3. WLTP Range (Descending)
+      const getRange = (v: Vehicle) =>
+        v.range?.rated?.length ? Math.max(...v.range.rated.map((r) => r.range_km)) : 0;
+      return getRange(b) - getRange(a);
+    });
+  }, [vehicles, applyFilters, filterOptions]);
 
   // Filter for Favorites
   const favoritesFilteredVehicles = allFilteredVehicles.filter((v) =>
