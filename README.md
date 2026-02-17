@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+<div align="center">
+  <img src="https://raw.githubusercontent.com/open-ev-data/.github/bd1f96d4c236e7c1dc43a33535fc9f065f9b152e/assets/open-ev-data-logo.svg" alt="OpenEV Data Logo" width="200" />
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# OpenEV Data UI
 
-Currently, two official plugins are available:
+> The official web interface for the OpenEV Data project. Visualize, search, and compare electric vehicle specifications from the community-maintained dataset.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/github/v/release/open-ev-data/open-ev-data-ui?label=version)](https://github.com/open-ev-data/open-ev-data-ui/releases)
+[![CI](https://github.com/open-ev-data/open-ev-data-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/open-ev-data/open-ev-data-ui/actions/workflows/ci.yml)
 
-## React Compiler
+## Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This repository hosts the **React-based frontend application** for the OpenEV ecosystem. It provides a user-friendly way to explore the structured data provided by the [OpenEV Data Dataset](https://github.com/open-ev-data/open-ev-data-dataset).
 
-## Expanding the ESLint configuration
+## Documentation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **[Get Started](docs/GET_STARTED.md)** — Setup, installation, and development guide.
+- **[Contributing](https://github.com/open-ev-data/.github/blob/main/CONTRIBUTING.md)** — How to contribute to the project.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Technical Documentation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **[Architecture](docs/ARCHITECTURE.md)** — Project structure, FSD methodology, and key decisions.
+- **[Page Layouts](docs/PAGE_LAYOUTS.md)** — Blueprint for main application pages.
+- **[Responsive Strategy](docs/RESPONSIVE_STRATEGY.md)** — Breakpoints and mobile-first approach.
+- **[SEO Strategy](docs/SEO_STRATEGY.md)** — Optimization for search engines.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Design System
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **[Design System](docs/DESIGN_SYSTEM.md)** — Typography, colors, and core UI principles.
+- **[UI Components](docs/UI_COMPONENTS.md)** — Reusable component library documentation.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Features
+
+- **Vehicle Explorer**: Browse the complete database of electric vehicles.
+- **Advanced Filtering**: Filter by range, price, battery capacity, and more.
+- **Comparison Tool**: Compare multiple vehicles side-by-side.
+- **Responsive Design**: Optimized experience for mobile, tablet, and desktop.
+- **Dark Mode**: Native support for light and dark themes.
+
+## Tech Stack
+
+- **Framework**: [React](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [CSS Modules](https://github.com/css-modules/css-modules) + PostCSS
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
+- **Testing**: [Vitest](https://vitest.dev/) (Unit) + [Playwright](https://playwright.dev/) (E2E)
+
+## License
+
+This project is licensed under the **MIT License**.
+
+See [LICENSE](LICENSE) for full terms.
+
+## Acknowledgments
+
+Part of the **OpenEV Data** initiative. Special thanks to all contributors building the open standard for EV specifications.
