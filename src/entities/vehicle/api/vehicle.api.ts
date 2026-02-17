@@ -45,10 +45,27 @@ export async function fetchDataset(tag: string): Promise<VehicleDataset> {
 
 /**
  * Orchestrates the fetching of the latest vehicle dataset.
- * 1. Discover latest tag
- * 2. Download corresponding JSON asset
+ *
+ * In Production (GitHub Pages):
+ * Fetches 'dataset.json' which is downloaded during the build process.
+ * This avoids CORS issues as the file is served from the same origin.
+ *
+ * In Development (Local):
+ * Fetches the latest tag via API proxy and downloads via release proxy.
  */
 export async function fetchLatestVehicles(): Promise<VehicleDataset> {
+  if (import.meta.env.PROD) {
+    // Fetch local file bundled during deploy
+    const response = await fetch(`${import.meta.env.BASE_URL}dataset.json`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to load production dataset: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  // Development flow using proxies
   const tag = await fetchLatestReleaseTag();
   return fetchDataset(tag);
 }

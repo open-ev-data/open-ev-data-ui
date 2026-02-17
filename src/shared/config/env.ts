@@ -16,7 +16,5 @@ export const API_ENDPOINTS = {
   LATEST_RELEASE: isDev
     ? `/api/github/repos/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/latest`
     : `${ENV.GITHUB_API_URL}/repos/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/latest`,
-  DOWNLOAD_BASE: isDev
-    ? `/proxy-github-release/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/download`
-    : `${ENV.GITHUB_RAW_URL}/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/download`,
+  DOWNLOAD_BASE: `/proxy-github-release/${ENV.REPO_OWNER}/${ENV.REPO_NAME}/releases/download`,
 } as const;

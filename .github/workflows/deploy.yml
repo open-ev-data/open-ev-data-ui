@@ -31,6 +31,30 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
+
+      - name: Download Dataset used in Production
+        run: |
+          # Fetch latest release info using GitHub API
+          LATEST_RELEASE=$(curl -s https://api.github.com/repos/open-ev-data/open-ev-data-dataset/releases/latest)
+
+          # Extract the browser download URL for the JSON file (open-ev-data-*.json)
+          DOWNLOAD_URL=$(echo "$LATEST_RELEASE" | grep -o 'https://github.com/[^"]*open-ev-data-v[^"]*.json' | head -n 1)
+
+          if [ -z "$DOWNLOAD_URL" ]; then
+            echo "Error: Could not find JSON dataset download URL"
+            exit 1
+          fi
+
+          echo "Downloading dataset from: $DOWNLOAD_URL"
+
+          # Ensure public directory exists (it should, but just in case)
+          mkdir -p public
+
+          # Download to public/dataset.json so it's bundled in the build
+          curl -L -o public/dataset.json "$DOWNLOAD_URL"
+
+          echo "Dataset downloaded successfully to public/dataset.json"
+
       - name: Build
         run: npm run build
       - name: Upload artifact
