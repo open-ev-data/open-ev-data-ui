@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [1.3.2](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.3.1...v1.3.2) (2026-02-17)
+
+### Performance Improvements
+
+* **sitemap:** include post generate sitemap xml ([73eba91](https://github.com/open-ev-data/open-ev-data-ui/commit/73eba9178f59eb07383959d7f6877a04023d528e))
+
 ## [1.3.1](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.3.0...v1.3.1) (2026-02-17)
 
 ### Performance Improvements
