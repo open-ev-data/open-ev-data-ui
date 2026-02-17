@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { useVehicleSearch } from '../model/use-vehicle-search';
 import { Spinner } from '@/shared/ui/Spinner/Spinner';
-import { getVehicleTitle } from '@/entities/vehicle';
+import { VehicleTitle } from '@/entities/vehicle';
+import type { Vehicle } from '@/entities/vehicle';
 import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
 import { generateMakeHue } from '@/shared/lib/color-generator';
 import { cn } from '@/shared/lib/cn';
@@ -60,7 +61,7 @@ export function SearchBar({ className }: { className?: string }) {
       {isOpen && query.length > 0 && (
         <div className={styles.dropdown}>
           {results.length > 0 ? (
-            results.map((vehicle) => (
+            results.map((vehicle: Vehicle) => (
               <button
                 key={vehicle.unique_code}
                 className={styles.resultItem}
@@ -76,7 +77,7 @@ export function SearchBar({ className }: { className?: string }) {
                   loading="lazy"
                 />
                 <div className={styles.info}>
-                  <span className={styles.name}>{getVehicleTitle(vehicle)}</span>
+                  <VehicleTitle vehicle={vehicle} className={styles.name} />
                 </div>
               </button>
             ))

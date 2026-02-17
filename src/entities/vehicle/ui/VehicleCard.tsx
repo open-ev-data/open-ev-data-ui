@@ -8,6 +8,7 @@ import { Card } from '@/shared/ui/Card/Card';
 import { Badge } from '@/shared/ui/Badge/Badge';
 import { Button } from '@/shared/ui/Button/Button';
 import { VehicleSpecsTable } from './VehicleSpecsTable';
+import { VehicleTitle } from './VehicleTitle/VehicleTitle';
 import { useFavorites } from '@/features/vehicle-favorites';
 import { cn } from '@/shared/lib/cn';
 import styles from './VehicleCard.module.css';
@@ -73,7 +74,7 @@ export function VehicleCard({
       <div className={styles.content}>
         <div className={styles.titleGroup}>
           <Link to={detailHref} className={styles.titleLink}>
-            <h3 className={styles.title}>{title}</h3>
+            <VehicleTitle vehicle={vehicle} as="h3" className={styles.title} />
           </Link>
           <Badge variant="neutral" className={styles.typeBadge}>
             {vehicle.vehicle_type.replace('_', ' ')}

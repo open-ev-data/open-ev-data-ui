@@ -3,7 +3,7 @@ import type { Vehicle } from '@/entities/vehicle';
 import { DataField, hasData } from '@/shared/lib/data-presence';
 import { formatCurrency, formatDistance } from '@/shared/lib/format';
 import { isFieldVisible } from '@/shared/config/field-visibility';
-import { getVehicleTitle } from '@/entities/vehicle/model/vehicle.helpers';
+import { VehicleTitle, getVehicleTitle } from '@/entities/vehicle';
 import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
 import { generateMakeHue } from '@/shared/lib/color-generator';
 import styles from './CompareTable.module.css';
@@ -71,7 +71,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                 alt={getVehicleTitle(vehicle)}
                 className={styles.vehicleImage}
               />
-              <div className={styles.vehicleName}>{getVehicleTitle(vehicle)}</div>
+              <VehicleTitle vehicle={vehicle} className={styles.vehicleName} />
               <div className={styles.vehicleTrim}>{vehicle.trim?.name}</div>
             </div>
           ))}
@@ -121,7 +121,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     }`}
                   >
                     <div className={styles.cellContent}>
-                      <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                      <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />
                       <DataField value={range} render={(r) => formatDistance(r)} fallback="—" />
                       {range && (
                         <div className={styles.progressBar}>
@@ -156,7 +156,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     }`}
                   >
                     <div className={styles.cellContent}>
-                      <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                      <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />
                       <DataField
                         value={kwh}
                         render={(capacity) => `${capacity.toFixed(1)} kWh`}
@@ -198,7 +198,7 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     }`}
                   >
                     <div className={styles.cellContent}>
-                      <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                      <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />
                       <DataField value={accel} render={(a) => `${a.toFixed(1)}s`} fallback="—" />
                       {accel && (
                         <div className={styles.progressBar}>
@@ -233,13 +233,13 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     value={vehicle.charging?.ac?.max_power_kw}
                     render={(power) => (
                       <>
-                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                        <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />
                         {`${power} kW`}
                       </>
                     )}
                     fallback={
                       <>
-                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>—
+                        <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />—
                       </>
                     }
                   />
@@ -266,13 +266,13 @@ export const CompareTable = ({ vehicles, onRemoveVehicle }: CompareTableProps) =
                     value={vehicle.charging?.dc?.max_power_kw}
                     render={(power) => (
                       <>
-                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>
+                        <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />
                         {`${power} kW`}
                       </>
                     )}
                     fallback={
                       <>
-                        <div className={styles.mobileVehicleName}>{getVehicleTitle(vehicle)}</div>—
+                        <VehicleTitle vehicle={vehicle} className={styles.mobileVehicleName} />—
                       </>
                     }
                   />

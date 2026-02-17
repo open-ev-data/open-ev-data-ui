@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { X, Trash2 } from 'lucide-react';
 import { useComparison } from '../model/comparison-context';
 import { Button } from '@/shared/ui/Button/Button';
-import { getVehicleTitle, VehicleSpecsTable } from '@/entities/vehicle';
+import { VehicleTitle, VehicleSpecsTable } from '@/entities/vehicle';
 import { getVehicleTypeImage } from '@/shared/lib/vehicle-image-mapper';
 import { generateMakeHue } from '@/shared/lib/color-generator';
 import { cn } from '@/shared/lib/cn';
@@ -50,7 +50,7 @@ export function ComparisonOverlay({ isOpen, onClose, className }: ComparisonOver
                     className={styles.thumb}
                   />
                   <div className={styles.info}>
-                    <span className={styles.name}>{getVehicleTitle(vehicle)}</span>
+                    <VehicleTitle vehicle={vehicle} className={styles.name} />
                   </div>
                   <Button
                     variant="ghost"

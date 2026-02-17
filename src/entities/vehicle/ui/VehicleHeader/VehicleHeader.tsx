@@ -1,5 +1,5 @@
 import type { Vehicle } from '../../model/vehicle.types';
-import { getVehicleTitle } from '../../model/vehicle.helpers';
+import { VehicleTitle } from '../VehicleTitle/VehicleTitle';
 import styles from './VehicleHeader.module.css';
 
 interface VehicleHeaderProps {
@@ -10,7 +10,7 @@ export const VehicleHeader = ({ vehicle }: VehicleHeaderProps) => {
   return (
     <div className={styles.header}>
       <div className={styles.titleRow}>
-        <h1 className={styles.title}>{getVehicleTitle(vehicle)}</h1>
+        <VehicleTitle vehicle={vehicle} as="h1" className={styles.title} />
         <div className={styles.badges}>
           <span className={styles.typeBadge}>{vehicle.vehicle_type.replace('_', ' ')}</span>
         </div>
