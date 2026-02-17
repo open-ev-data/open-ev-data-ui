@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [1.3.1](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.3.0...v1.3.1) (2026-02-17)
+
+### Performance Improvements
+
+* **analytics:** include google analytics ([f5fbfb3](https://github.com/open-ev-data/open-ev-data-ui/commit/f5fbfb316e33460645a5dc8bd95220b095f2b61f))
+
 ## [1.3.0](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.2.0...v1.3.0) (2026-02-17)
 
 ### Features
