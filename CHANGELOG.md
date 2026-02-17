@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [Conventional Commits](https://www.conventionalcommits.org/).
 
+## [1.1.0](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.0.1...v1.1.0) (2026-02-17)
+
+### Features
+
+* implement json download in build time of github pages ([76f0364](https://github.com/open-ev-data/open-ev-data-ui/commit/76f03645bfef097985ba7eebfda30db86731f22d))
+
 ## [1.0.1](https://github.com/open-ev-data/open-ev-data-ui/compare/v1.0.0...v1.0.1) (2026-02-17)
 
 ### Bug Fixes
