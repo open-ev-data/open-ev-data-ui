@@ -8,7 +8,10 @@ import styles from './LayoutHeader.module.css';
 import { Info, Github } from 'lucide-react';
 import { AboutModal } from '@/widgets/AboutModal';
 
+import { useVehicleMetadata } from '@/entities/vehicle/api/use-vehicles';
+
 export function LayoutHeader({ className }: { className?: string }) {
+  const { data: metadata } = useVehicleMetadata();
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(() => {
     try {
       const hasSeen = localStorage.getItem('hasSeenAboutModal');
@@ -36,6 +39,19 @@ export function LayoutHeader({ className }: { className?: string }) {
           <SearchBar />
         </div>
         <div className={styles.actions}>
+          <div className={styles.versionInfo}>
+            <span className={styles.versionText} title={`UI Version: v${__APP_VERSION__}`}>
+              UI v{__APP_VERSION__}
+            </span>
+            {metadata && (
+              <span
+                className={styles.versionText}
+                title={`Dataset Commit: ${metadata.dataset_commit}`}
+              >
+                Data v{metadata.etl_version}
+              </span>
+            )}
+          </div>
           <Button
             variant="ghost"
             size="sm"

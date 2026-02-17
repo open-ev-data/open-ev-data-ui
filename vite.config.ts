@@ -5,6 +5,9 @@ import path from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   base: '/open-ev-data-ui/',
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+  },
   plugins: [react()],
   resolve: {
     alias: {
