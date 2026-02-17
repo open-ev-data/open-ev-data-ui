@@ -9,15 +9,20 @@ import { Info } from 'lucide-react';
 import { AboutModal } from '@/widgets/AboutModal';
 
 export function LayoutHeader({ className }: { className?: string }) {
-  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(() => {
+    try {
+      const hasSeen = localStorage.getItem('hasSeenAboutModal');
+      return !hasSeen;
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
-    const hasSeenAboutModal = localStorage.getItem('hasSeenAboutModal');
-    if (!hasSeenAboutModal) {
-      setIsAboutModalOpen(true);
+    if (isAboutModalOpen) {
       localStorage.setItem('hasSeenAboutModal', 'true');
     }
-  }, []);
+  }, [isAboutModalOpen]);
 
   return (
     <>
